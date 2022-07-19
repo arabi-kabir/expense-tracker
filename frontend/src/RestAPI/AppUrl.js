@@ -3,7 +3,6 @@ class AppUrl {
 
     static authLogin = this.baseUrl + 'auth/login'
     static authRegister = this.baseUrl + 'auth/register'
-    // static dashboard = this.baseUrl + 'dashboard'
 }
 
 export default AppUrl

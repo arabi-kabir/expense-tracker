@@ -71,7 +71,7 @@ async function userLogin(req, res) {
             user.token = token;
 
             // user
-            res.status(200).json(user);
+            return res.status(200).json(user);
         }
 
         res.status(400).send("Invalid Credentials");

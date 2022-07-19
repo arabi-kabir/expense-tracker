@@ -13,9 +13,14 @@ class RestClient {
     }
 
     static postRequest = (url, postData) => {
+        var cors = {
+            origin: "http://127.0.0.1:8000"
+        }
+
         let config = {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': cors.origin
             }
         }
 

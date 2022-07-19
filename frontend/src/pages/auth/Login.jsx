@@ -5,13 +5,45 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
+
+import AuthService from '../../services/auth/auth.service'
 
 function Login() {
-    const [textValue, setTextValue] = useState('');
+    const [formData, setformData] = useState({
+        email: '',
+        password: ''
+    });
 
-    const onTextChange = (e) => setTextValue(e.target.value);
-    const handleSubmit = () => console.log(textValue);
+    const navigate = useNavigate()
+
+    const { email, password } = formData
+
+    const onTextChange = (e) => {
+        setformData((prevState) => ({
+            ...prevState,
+            [e.target.id]: e.target.value
+        }))
+    };
+
     const handleReset = () => setTextValue("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            const res = await AuthService.login(email, password)
+            if(res) {
+                navigate('/dashboard')
+
+                toast.success('Logged in successfully')
+            }
+        } catch (error) {
+            console.log(error);
+            toast.success('Opps! something is wrong.')
+        }
+    }
 
     return (
         <div>
@@ -23,17 +55,20 @@ function Login() {
 
                             <TextField
                                 fullWidth
+                                id="email"
                                 onChange={onTextChange}
-                                value={textValue}
+                                value={email}
                                 label={"Email"}
                                 style={{ marginBottom: '20px' }}
                             />
 
                             <TextField
                                 fullWidth
-                                id="outlined-password-input"
+                                id="password"
                                 label="Password"
                                 type="password"
+                                onChange={onTextChange}
+                                value={password}
                                 autoComplete="current-password"
                             />
 
@@ -46,7 +81,6 @@ function Login() {
                                 </Grid>
                             </Grid>
                         </form>
-                        
                     </Paper>
                 </Box>
             </Container>

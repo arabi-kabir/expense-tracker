@@ -1,16 +1,14 @@
 const express = require('express')
 const cors = require('cors')
-
 const path = require('path')
 
-const api = require('../src/routes/api')
-
 const app = express()
-
 app.use(cors())
+
 app.use(express.json())
 
 // routers
+const api = require('../src/routes/api')
 app.use('/v1', api)
 
 // app.get('/*', (req, res) => {
