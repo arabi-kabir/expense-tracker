@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import AuthService from '../../services/auth/auth.service'
 
 function Login() {
+    const [textvalue, setTextValue] = useState('')
     const [formData, setformData] = useState({
         email: '',
         password: ''
@@ -74,7 +75,7 @@ function Login() {
 
                             <Grid container spacing={2} columns={16} sx={{ mt: 1 }}>
                                 <Grid item xs={8}>
-                                    <Button variant="contained" onClick={handleReset}>Reset</Button>    
+                                    {/* <Button variant="contained" onClick={handleReset}>Reset</Button>     */}
                                 </Grid>
                                 <Grid item xs={8}>
                                     <Button style={{ float: 'right' }} variant="contained" color="success" onClick={handleSubmit}>Login</Button>

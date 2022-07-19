@@ -27,7 +27,6 @@ const getCurrentUser = () => {
     } else {
         return false
     }
-    console.log(res);
 };
 
 const AuthService = {
