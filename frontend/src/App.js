@@ -8,6 +8,7 @@ import Register from './pages/auth/Register'
 import About from './pages/About';
 import Dashboard from './pages/Dashboard'
 import Logout from './components/Logout';
+import Expenses from './pages/Expenses';
 
 function App() {
     return (
@@ -18,6 +19,8 @@ function App() {
 					<Route path='/register' element={<Register />} />
 					<Route path='/about' element={<About />} />
 					<Route path='/dashboard' element={<Dashboard />} />
+					<Route path='/expenses' element={<Expenses />} />
+
 					<Route path='/logout' element={<Logout />} />
 				</Routes>
 			</Router>
