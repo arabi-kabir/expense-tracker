@@ -37,23 +37,36 @@ const rows = [
 
 function Expenses() {
     const [expenses, setExpenses] = useState([])
+    const [totalPages, setTotalpages] = useState(0)
+    const [pageNumber, setPageNumber] = useState(0)
+
+    const pages = new Array(totalPages).fill(null).map((v, i) => i)
 
     useEffect(() => {
         getExpensedata()
-    }, [])
+    }, [pageNumber])
 
 
     const getExpensedata = async (e) => {
         try {
-            const url = AppUrl.getExpenses + '?page=2'
+            const url = AppUrl.getExpenses + `?page=${pageNumber}`
             return RestClient.getRequest(url)
             .then(result => {
-                const {expenses, total} = result.data;
+                const {expenses, totalPages} = result.data;
                 setExpenses(expenses)
+                setTotalpages(totalPages)
             })
         } catch (error) {
             return error
         }
+    }
+
+    const gotoPrevious = () => {
+        setPageNumber(Math.max(0, pageNumber - 1))
+    }
+
+    const gotoNext = () => {
+        setPageNumber(Math.min(totalPages - 1, pageNumber + 1))
     }
 
     return (
@@ -73,15 +86,27 @@ function Expenses() {
                     />
                 </div> */}
 
+                <h4>Page of {pageNumber + 1}</h4>
+
                 {
                     expenses.map((expense) => (
-                        <div>
-                            <Paper sx={{ p: 1, m: 1 }}>
-                                <p>{expense.expense_name}</p>
+                        <div key={expense._id}>
+                            <Paper style={{ padding: '8px', margin: '10px' }}>
+                                <p style={{ margin: '0' }}>{expense.expense_name}</p>
                             </Paper>                        
                         </div>
                     ))
                 }
+
+                <button onClick={() => gotoPrevious()}>Previous</button>
+
+                {/* {
+                    pages.map((pageIndex) => (
+                        <button key={pageIndex} onClick={() => setPageNumber(pageIndex)}>{pageIndex + 1}</button>
+                    ))
+                } */}
+
+            <button onClick={() => gotoNext()}>next</button>
             </Container>
         </div>
     )
