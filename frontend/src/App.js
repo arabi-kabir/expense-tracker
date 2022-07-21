@@ -8,7 +8,8 @@ import Register from './pages/auth/Register'
 import About from './pages/About';
 import Dashboard from './pages/Dashboard'
 import Logout from './components/Logout';
-import Expenses from './pages/Expenses';
+import Expenses from './pages/Expense/Expenses';
+import AddExpense from './pages/Expense/AddExpense';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
 					<Route path='/about' element={<About />} />
 					<Route path='/dashboard' element={<Dashboard />} />
 					<Route path='/expenses' element={<Expenses />} />
+					<Route path='/add-expenses' element={<AddExpense />} />
 
 					<Route path='/logout' element={<Logout />} />
 				</Routes>
