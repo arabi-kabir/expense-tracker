@@ -9,9 +9,13 @@ async function getAllExpense(req, res) {
     const page = parseInt(req.query.page || "0")
     const total = await Expense.countDocuments({})
 
-    const expenses = await Expense.find({}).limit(PAGE_SIZE).skip(PAGE_SIZE * page).populate('payment_method')
+    const expenses = await Expense.find({})
+        .limit(PAGE_SIZE)
+        .skip(PAGE_SIZE * page)
+        .populate('payment_method')
+        .sort({'createdAt': -1})
 
-    return res.json({
+    return res.status(201).json({
         expenses,
         totalPages: Math.ceil(total / PAGE_SIZE)
     })
@@ -29,6 +33,8 @@ async function getExpense(req, res) {
 // expense insert
 async function insertExpense(req, res) {
     const data = req.body
+
+    // return res.status(201).send(req.body.expense_name)
 
     const expense = new Expense({
         expense_name: data.expense_name,

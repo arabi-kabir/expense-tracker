@@ -7,13 +7,18 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import FormControl from '@mui/material/FormControl';
+import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 import RestClient from '../../RestAPI/RestClient';
 import AppUrl from '../../RestAPI/AppUrl';
 import Menu from '../../components/navbar/Menu'
 import Spinner from '../../components/Spinner'
+
   
 function AddExpense() {
+    const navigate = useNavigate()
+
     const [expenseNameForm, setExpenseName] = useState('')
     const [expenseAmountForm, setExpenseAmount] = useState('')
     const [expenseCategoryForm, setExpenseCategory] = useState('')
@@ -51,9 +56,7 @@ function AddExpense() {
             const url = AppUrl.getExpenseCategory
             await RestClient.getRequest(url)
             .then(result => {
-                console.log(result.data);
                 setExpenseCatyegory(result.data)
-                // setLoading(false)
             })
         } catch (error) {
             return error
@@ -66,7 +69,6 @@ function AddExpense() {
             await RestClient.getRequest(url)
             .then(result => {
                 setBookList(result.data)
-                // setLoading(false)
             })
         } catch (error) {
             return error
@@ -76,24 +78,24 @@ function AddExpense() {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
 
-        console.log('as');
-
-        // try {
-        //     const url = AppUrl.insertExpense
-        //     return await RestClient.postRequest(url, {
-        //         expense_name: expenseNameForm,
-        //         expense_amount: expenseAmountForm,
-        //         payment_method: expenseBookForm,
-        //         expense_categories: expenseCategoryForm
-        //     })
-        //     .then(result => {
-        //         console.log(result.data);
-        //     })
-
-        //     console.log(res);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            const url = AppUrl.insertExpense
+            return await RestClient.postRequest(url, {
+                expense_name: expenseNameForm,
+                expense_amount: expenseAmountForm,
+                payment_method: expenseBookForm,
+                expense_categories: expenseCategoryForm
+            })
+            .then(result => {
+                if(result.status) {
+                    navigate('/expenses')
+                    toast.success('Expense Added')
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            toast.success('Something is wrong')
+        }
     } 
 
     if(loading) {
