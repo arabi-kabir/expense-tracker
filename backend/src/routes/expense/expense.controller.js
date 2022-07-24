@@ -98,6 +98,18 @@ async function updateExpense(req, res) {
     }
 }
 
+async function getExpenseChartData(req, res) {
+    const data = req.body.expense_dates
+    const result = []
+
+    data.forEach(d => {
+        result.push(d);
+    });
+
+    res.status(200).send(result)
+}
+
+// Genarate dummy data
 async function dumpExpense(req, res) {
     const payment = ['62814314701af5904c668964', '62b739d1659bb420ef7aef4f', '62b739d8659bb420ef7aef51', '62b739e1659bb420ef7aef53'];
     const expense_cat = ['626853ad7857379b8b07a19e', '6280880496634879feb90933']
@@ -135,5 +147,6 @@ module.exports = {
     insertExpense,
     deleteExpense,
     updateExpense,
-    dumpExpense
+    dumpExpense,
+    getExpenseChartData
 }

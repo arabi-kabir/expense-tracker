@@ -4,7 +4,6 @@ const getDatesBetweenTwoDate = (startDate, endDate) => {
     let dateList = []
 
     dates.forEach(function (date) {
-        console.log(date)
         var todayDate = date.toISOString().slice(0, 10);
         dateList.push(todayDate)
     })

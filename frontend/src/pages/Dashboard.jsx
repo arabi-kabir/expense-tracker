@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Container from '@mui/material/Container';
 import Menu from '../components/navbar/Menu'
 import Grid from '@mui/material/Grid';
 import {faker} from '@faker-js/faker';
 import { getDatesBetweenTwoDate } from '../services/date/dateFunctions';
-
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -15,10 +14,10 @@ import {
     Tooltip,
     Filler,
     Legend,
-  } from 'chart.js';
-  import { Line } from 'react-chartjs-2';
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
   
-  ChartJS.register(
+ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
@@ -27,47 +26,68 @@ import {
     Tooltip,
     Filler,
     Legend
-  );
+);
 
-  var today = new Date();
-var priorDate = new Date(new Date().setDate(today.getDate() - 30));
+// export const options = {
+// 	responsive: true,
+// 	plugins: {
+// 		legend: {
+// 			position: 'top',
+// 		},
+// 		title: {
+// 			display: true,
+// 			text: 'Chart.js Line Chart',
+// 		},
+// 	},
+// };
 
-  const labels = getDatesBetweenTwoDate(priorDate, today)
+// export const data = {
+//     labels,
+//     datasets: [
+//         {
+//             fill: true,
+//             label: 'Dataset 2',
+//             data: labels.map(() => faker.datatype.number({ min: 400, max: 5000 })),
+//             borderColor: 'rgb(53, 162, 235)',
+//             backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//         },
+//     ],
+// };
 
-  export const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Line Chart',
-      },
-    },
-  };
+const getChartData = async (labels) => {
+	try {
+		const url = AppUrl.expenseChartData
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      fill: true,
-      label: 'Dataset 2',
-      data: labels.map(() => faker.datatype.number({ min: 400, max: 5000 })),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
+		return RestClient.postRequest(url, JSON.stringify(labels))
+		.then(result => {
+			if(result.status == 200) {
+				console.log(result.data);
+			}
+		})
+	} catch (error) {
+		return error
+	}
+}
 
 
 function Dashboard() {
+
+	useEffect(() => {
+		console.log('hiiii');
+		var today = new Date();
+		var priorDate = new Date(new Date().setDate(today.getDate() - 30));
+	
+		  const labels = getDatesBetweenTwoDate(priorDate, today)
+
+		getChartData(labels)
+	}, [])
+
     // console.log(labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),)
     return (
         <div>
             <Menu />
 
-            <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
+            {/* <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
                 <h4 style={{ textAlign: 'center' }}>Dashboard</h4>
 
                 <Grid container>
@@ -81,7 +101,7 @@ function Dashboard() {
                         last 5 items
                     </Grid>
                 </Grid>
-            </Container>
+            </Container> */}
         </div>
     )
 }

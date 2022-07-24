@@ -8,6 +8,8 @@ class AppUrl {
     static getExpenseCategory = this.baseUrl + 'expense-category'
     static getMyBook = this.baseUrl + 'my-book'
     static insertExpense = this.baseUrl + 'expense'
+
+    static expenseChartData = this.baseUrl + 'expense-chart-data'
 }
 
 export default AppUrl

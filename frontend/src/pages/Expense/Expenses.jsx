@@ -96,14 +96,14 @@ function Expenses() {
 
         try {
             const url = AppUrl.getExpenses + `/${expense_id}`
-            console.log(url);
+
             return RestClient.deleteRequest(url)
             .then(result => {
                 if(result.status == 200) {
                     getExpensedata()
                     handleItemDeleteModalClose()
                     setLoading(false)
-                    toast.success('Expense deleted')
+                    toast.success('Expense Deleted')
                 }
             })
         } catch (error) {
@@ -113,7 +113,7 @@ function Expenses() {
 
     const gotoPrevious = () => {
         setLoading(true)
-        setPageNumber(Math.max(0, pageNumber - 1))
+        setPageNumber(Math.max(1, pageNumber - 1))
     }
 
     const gotoNext = () => {
