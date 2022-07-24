@@ -13,6 +13,7 @@ async function getAllExpense(req, res) {
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page)
         .populate('payment_method')
+        .populate('expense_categories')
         .sort({'createdAt': -1})
 
     return res.status(201).json({
@@ -24,7 +25,7 @@ async function getAllExpense(req, res) {
 // get a expense
 async function getExpense(req, res) {
     try { 
-        return res.status(200).json(await Expense.findOne({ _id: req.params.id }).populate('payment_method'))
+        return res.status(200).json(await Expense.findOne({ _id: req.params.id }).populate('payment_method').populate('expense_categories'))
     } catch (error) {
         res.status(400).send(error)
     }
