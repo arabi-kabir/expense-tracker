@@ -1,3 +1,4 @@
+const { response } = require('express');
 var mongoose = require('mongoose');
 
 const Expense = require('../../models/expense.model')
@@ -39,7 +40,7 @@ async function insertExpense(req, res) {
 
     const expense = new Expense({
         expense_name: data.expense_name,
-        expense_amount: data.expense_amount,
+        expense_amount: parseInt(data.expense_amount),
         payment_method:  data.payment_method,
         expense_categories: data.expense_categories,
     })
@@ -98,15 +99,48 @@ async function updateExpense(req, res) {
     }
 }
 
-async function getExpenseChartData(req, res) {
-    const data = req.body.expense_dates
-    const result = []
+async function getExpenseChartData(req, res) { 
+    const convertData = JSON.parse(req.body.data)
 
-    data.forEach(d => {
-        result.push(d);
-    });
+    firstElement = convertData[0]
+    lastElement = convertData[convertData.length - 1]
 
-    res.status(200).send(result)
+    let response = await Expense.aggregate(
+        [
+            { 
+                $match: {
+                    createdAt : {
+                        $gte: new Date(firstElement),
+                        $lte: new Date(lastElement)
+                    }
+                } 
+            },
+            { 
+                $group: {
+                    _id: {
+                        $dateToString: {format: "%Y-%m-%d", date:"$createdAt"}
+                    },
+                    totalSum: {
+                        $sum: "$expense_amount"
+                    }
+                } 
+            }
+
+        ]
+    )
+
+    // response = { firstElement, lastElement }
+
+
+    // response.forEach(date => {
+        // curr_date = (response[0].createdAt)
+        // mod_date = JSON.stringify(curr_date)
+        // mod_date_2 = mod_date.substring(0, 10)
+
+        // results.push(mod_date_2)
+    // });
+
+    res.status(200).send(response)
 }
 
 // Genarate dummy data
@@ -120,7 +154,7 @@ async function dumpExpense(req, res) {
     for(i=1; i<100; i++) {
         const expense = new Expense({
             expense_name: getRandomItem(names),
-            expense_amount: getRandomItem(amount),
+            expense_amount: parseInt(getRandomItem(amount)),
             payment_method: mongoose.Types.ObjectId(getRandomItem(payment)) ,
             expense_categories: mongoose.Types.ObjectId(getRandomItem(expense_cat)),
         })

@@ -9,7 +9,7 @@ class AppUrl {
     static getMyBook = this.baseUrl + 'my-book'
     static insertExpense = this.baseUrl + 'expense'
 
-    static expenseChartData = this.baseUrl + 'expense-chart-data'
+    static expenseChartData = this.baseUrl + 'expense/expense-chart-data'
 }
 
 export default AppUrl

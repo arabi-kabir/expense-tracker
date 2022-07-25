@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import Container from '@mui/material/Container';
 import Menu from '../components/navbar/Menu'
+import RestClient from '../RestAPI/RestClient';
+import AppUrl from '../RestAPI/AppUrl';
 import Grid from '@mui/material/Grid';
 import {faker} from '@faker-js/faker';
 import { getDatesBetweenTwoDate } from '../services/date/dateFunctions';
@@ -58,7 +60,11 @@ const getChartData = async (labels) => {
 	try {
 		const url = AppUrl.expenseChartData
 
-		return RestClient.postRequest(url, JSON.stringify(labels))
+    const data = JSON.stringify(labels)
+
+		return RestClient.postRequest(url, {
+      data
+    })
 		.then(result => {
 			if(result.status == 200) {
 				console.log(result.data);
@@ -79,7 +85,9 @@ function Dashboard() {
 	
 		  const labels = getDatesBetweenTwoDate(priorDate, today)
 
-		getChartData(labels)
+      //console.log(labels);
+
+		  getChartData(labels)
 	}, [])
 
     // console.log(labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),)
