@@ -18,6 +18,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+
   
 ChartJS.register(
     CategoryScale,
@@ -79,15 +80,13 @@ const getChartData = async (labels) => {
 function Dashboard() {
 
 	useEffect(() => {
-		console.log('hiiii');
-		var today = new Date();
+		var today = new Date(); 
+        var date = today.setDate(today.getDate() + 1);
 		var priorDate = new Date(new Date().setDate(today.getDate() - 30));
 	
-		  const labels = getDatesBetweenTwoDate(priorDate, today)
+		const labels = getDatesBetweenTwoDate((priorDate), (date))
 
-      //console.log(labels);
-
-		  getChartData(labels)
+		getChartData(labels)
 	}, [])
 
     // console.log(labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),)
