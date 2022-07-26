@@ -68,7 +68,12 @@ const getChartData = async (labels) => {
     })
 		.then(result => {
 			if(result.status == 200) {
-				console.log(result.data);
+				result = result.data
+
+        result.forEach(function (item, index) {
+          
+        });
+
 			}
 		})
 	} catch (error) {
