@@ -1,4 +1,4 @@
-import React, { Fragment, createContext, useState, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,6 +10,8 @@ import Dashboard from './pages/Dashboard'
 import Logout from './components/Logout';
 import Expenses from './pages/Expense/Expenses';
 import AddExpense from './pages/Expense/AddExpense';
+import EditExpense from './pages/Expense/EditExpense';
+import ReportIndex from './pages/Report/ReportIndex';
 
 function App() {
     return (
@@ -22,6 +24,9 @@ function App() {
 					<Route path='/dashboard' element={<Dashboard />} />
 					<Route path='/expenses' element={<Expenses />} />
 					<Route path='/add-expenses' element={<AddExpense />} />
+					<Route path='/edit-expenses/:id' element={<EditExpense />} />
+
+					<Route path='/reports' element={<ReportIndex />} />
 
 					<Route path='/logout' element={<Logout />} />
 				</Routes>

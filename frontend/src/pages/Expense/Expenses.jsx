@@ -6,10 +6,12 @@ import CardContent from '@mui/material/CardContent';
 import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Grid from '@mui/material/Grid';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 import RestClient from '../../RestAPI/RestClient';
 import AppUrl from '../../RestAPI/AppUrl';
@@ -19,6 +21,8 @@ import MyModal from '../../components/MyModal';
 
   
 function Expenses() {
+    const navigate = useNavigate()
+
     const [expenses, setExpenses] = useState([])
     const [expenseViewMode, setExpenseViewMode] = useState(false)
     const [singleExpense, setSingleExpense] = useState(null)
@@ -60,6 +64,7 @@ function Expenses() {
     const getExpensedata = async () => {
         try {
             const url = AppUrl.getExpenses + `?page=${pageNumber}`
+            console.log(url);
             return RestClient.getRequest(url)
             .then(result => {
                 const {expenses, totalPages} = result.data;
@@ -111,9 +116,18 @@ function Expenses() {
         }
     }
 
+    // Handle expense edit
+    const handleItemEdit = (expense_id) => {
+        navigate('/edit-expenses/' + expense_id)
+    }
+
     const gotoPrevious = () => {
         setLoading(true)
-        setPageNumber(Math.max(1, pageNumber - 1))
+        setPageNumber(Math.max(0, pageNumber - 1))
+
+        if(pageNumber == 0) {
+            setLoading(false)
+        }
     }
 
     const gotoNext = () => {
@@ -158,10 +172,21 @@ function Expenses() {
                                             <IconButton 
                                                 aria-label="delete" 
                                                 size="small" 
+                                                color="error"
                                                 style={{ float: 'right' }} 
                                                 onClick={(event) => handleItemDeleteModalOpen(expense._id, event)}
                                             >
                                                 <DeleteIcon />
+                                            </IconButton>
+
+                                            <IconButton 
+                                                aria-label="delete" 
+                                                size="small" 
+                                                color="primary"
+                                                style={{ float: 'right' }} 
+                                                onClick={(event) => handleItemEdit(expense._id)}
+                                            >
+                                                <ModeEditIcon />
                                             </IconButton>
                                         </Grid>
                                     </Grid>
@@ -181,6 +206,7 @@ function Expenses() {
                 } */}
             </Container>
 
+            {/* View Modal */}
             <MyModal closeModal={handleClose} open={open} heading="Expense Details">
                 {
                     expenseViewMode && (

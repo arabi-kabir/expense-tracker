@@ -29,6 +29,7 @@ function Menu() {
 						<Toolbar>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/dashboard'}>Dashboard</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/expenses'}>Expenses</Link>
+							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/reports'}>Report</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/about'}>About</Link>
 
 							<Button style={{ padding: '20px', textDecoration: 'none' }} onClick={() => logout()}>Logout</Button>

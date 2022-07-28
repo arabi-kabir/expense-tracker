@@ -7,7 +7,7 @@ const Mailer = require('../../services/node-mailer')
 // get all expense
 async function getAllExpense(req, res) {
     const PAGE_SIZE = 5
-    const page = parseInt(req.query.page || "0")
+    const page = parseInt(req.query.page || 0)
     const total = await Expense.countDocuments({})
 
     const expenses = await Expense.find({})
@@ -83,15 +83,20 @@ async function deleteExpense(req, res) {
 async function updateExpense(req, res) {
     try {
         const doc = await Expense.findById(req.params.id)
+
+        console.log(doc);
     
         if(!doc) {
             res.status(400).send('expense not found')
         } else {
+            const data = req.body 
             doc.expense_name = data.expense_name,
             doc.expense_amount = data.expense_amount,
             doc.payment_method = data.payment_method,
-            doc.expense_categories = data.expense_categories,
+            doc.expense_categories = data.expense_categories
+
             await doc.save()
+
             res.status(200).send('expense updated')
         }
     } catch (error) {
@@ -100,10 +105,10 @@ async function updateExpense(req, res) {
 }
 
 async function getExpenseChartData(req, res) { 
-    const convertData = JSON.parse(req.body.data)
+    const allDates = JSON.parse(req.body.data)
 
-    firstElement = convertData[0]
-    lastElement = convertData[convertData.length - 1]
+    firstElement = allDates[0]
+    lastElement = allDates[allDates.length - 1]
 
     let response = await Expense.aggregate(
         [
@@ -129,18 +134,23 @@ async function getExpenseChartData(req, res) {
         ]
     )
 
-    // response = { firstElement, lastElement }
+    let results = []
 
+    allDates.forEach(date => {
+        let found = false
+        response.forEach(responseDate => {
+            if(responseDate._id == date) {
+                results.push(responseDate.totalSum)
+                found = true
+            }
+        })
 
-    // response.forEach(date => {
-        // curr_date = (response[0].createdAt)
-        // mod_date = JSON.stringify(curr_date)
-        // mod_date_2 = mod_date.substring(0, 10)
+        if(found == false) {
+            results.push('0')
+        }
+    });
 
-        // results.push(mod_date_2)
-    // });
-
-    res.status(200).send(response)
+    res.status(200).send(results)
 }
 
 // Genarate dummy data

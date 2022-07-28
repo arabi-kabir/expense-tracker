@@ -55,6 +55,28 @@ class RestClient {
                 return error
             })
     }
+
+    static updateRequest = (url, postData) => {
+        var cors = {
+            origin: "http://127.0.0.1:8000"
+        }
+
+        let config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': cors.origin
+            }
+        }
+
+        return axios
+            .put(url, postData, config)
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return error
+            })
+    }
 }
 
 export default RestClient
