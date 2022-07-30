@@ -10,6 +10,8 @@ class AppUrl {
     static insertExpense = this.baseUrl + 'expense'
 
     static expenseChartData = this.baseUrl + 'expense/expense-chart-data'
+
+    static expenseReportData = this.baseUrl + 'report/expense'
 }
 
 export default AppUrl

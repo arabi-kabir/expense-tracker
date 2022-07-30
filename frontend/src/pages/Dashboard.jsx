@@ -46,8 +46,8 @@ function Dashboard() {
         <div>
             <Menu />
 
-            <Container style={{ marginTop: '20px', marginBottom: '20px' }}>
-                <h4 style={{ textAlign: 'center' }}>Dashboard</h4>
+            <Container style={{ marginTop: '20px', marginBottom: '60px', backgroundColor: '#ffffff' }}>
+                <h4 style={{ textAlign: 'center', 'paddingTop': '20px' }}>Dashboard</h4>
 
                 <Grid container>
                     <Grid item xs={12} style={{ border: '1px solid #EEF1F1', padding: '10px'}}>

@@ -12,6 +12,7 @@ import Expenses from './pages/Expense/Expenses';
 import AddExpense from './pages/Expense/AddExpense';
 import EditExpense from './pages/Expense/EditExpense';
 import ReportIndex from './pages/Report/ReportIndex';
+import ExpenseReport from './pages/Report/Expense/ExpenseReport';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
 					<Route path='/edit-expenses/:id' element={<EditExpense />} />
 
 					<Route path='/reports' element={<ReportIndex />} />
+					<Route path='/report/expense' element={<ExpenseReport />} />
 
 					<Route path='/logout' element={<Logout />} />
 				</Routes>

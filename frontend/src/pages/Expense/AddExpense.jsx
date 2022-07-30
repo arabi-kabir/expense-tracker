@@ -106,7 +106,7 @@ function AddExpense() {
         <div>
             <Menu />
 
-            <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px' }}>
+            <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px', marginBottom: '40px', backgroundColor: '#fff' }}>
                 <div style={{ paddingTop: '10px', textAlign: 'center' }}>
                     <h3 style={{ fontWeight: 'lighter' }}>Add New Expense</h3>
 

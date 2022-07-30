@@ -152,12 +152,10 @@ function Expenses() {
                 
             </Container>
 
-            <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px' }}>
+            <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px', backgroundColor: '#ffffff', marginBottom: '40px' }}>
                 <div style={{ paddingTop: '10px', textAlign: 'center' }}>
                     <h3>Expenses</h3>
                 </div>
-
-                <h4 style={{ marginLeft: '7px' }}>Page of {pageNumber + 1}</h4>
 
                 {
                     expenses.map((expense) => (
@@ -196,8 +194,15 @@ function Expenses() {
                     ))
                 }
 
-                <Button onClick={gotoPrevious} sx={{ m:1 }} startIcon={<ArrowBackIosNewIcon/>}>Previous</Button>
-                <Button onClick={gotoNext} endIcon={<ArrowForwardIosIcon/>}>Next</Button>
+                <Grid container spacing={2}>
+                    <Grid item xs={8}>
+                        <Button onClick={gotoPrevious} sx={{ m:1 }}>Previous</Button>
+                        <Button onClick={gotoNext}>Next</Button>                             
+                    </Grid>
+                    <Grid item xs={4}>
+                        <h4 style={{ float: 'right', paddingRight: '10px' }}>Page of {pageNumber + 1}</h4>
+                    </Grid>
+                </Grid>
 
                 {/* {
                     pages.map((pageIndex) => (
