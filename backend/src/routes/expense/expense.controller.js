@@ -161,7 +161,7 @@ async function dumpExpense(req, res) {
     const names = ['Burger', 'Pizza', 'Ice-cream', 'Game', 'Rickshaw fare', 'Bus fare', 'Bazar']
     const amount = [132,234,345,13,2435,6,56,46,7567,3,24,2]
 
-    for(i=1; i<100; i++) {
+    for(i=1; i<20; i++) {
         const expense = new Expense({
             expense_name: getRandomItem(names),
             expense_amount: parseInt(getRandomItem(amount)),
