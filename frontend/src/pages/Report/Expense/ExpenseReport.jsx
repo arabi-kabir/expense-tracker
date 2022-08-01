@@ -9,6 +9,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { DateRangePicker } from 'react-date-range';
+import Grid from '@mui/material/Grid';
+
+import TextField from '@mui/material/TextField';
+// import { DateRangePicker, DateRange } from "@material-ui/pickers";
+import Box from '@mui/material/Box';
+import { addDays } from 'date-fns';
+
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import Spinner from '../../../components/Spinner'
 import RestClient from '../../../RestAPI/RestClient';
@@ -23,6 +33,13 @@ function ExpenseReport() {
     const [totalPages, setTotalpages] = useState(0)
     const [pageNumber, setPageNumber] = useState(0)
     const [loading, setLoading] = useState(true)
+    const [date_range, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: addDays(new Date(), 7),
+            key: 'selection'
+        }
+    ]);
 
     useEffect(() => {
         getExpensedata()
@@ -69,41 +86,60 @@ function ExpenseReport() {
             <Menu />
 
             <Container style={{ 'marginTop': '30px' }}>
+                <div>
+                    <Grid container spacing={2}>
+                        <Grid item xs={6} style={{ marginBottom: '20px' }}>
+                            <DateRangePicker
+                                onChange={item => setDateRange([item.selection])}
+                                showSelectionPreview={true}
+                                moveRangeOnFirstSelection={false}
+                                months={1}
+                                ranges={date_range}
+                                direction="horizontal"
+                                // style={{ border: '1px solid grey' }}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    {/* <Paper style={{ marginBottom: '20px' }}> */}
+                        
+                    {/* </Paper> */}
+                </div>
                 
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead>
-                        <TableRow style={{ backgroundColor: '#34495e' }}>
-                            <TableCell style={{ color: '#ecf0f1' }}>Expense Name</TableCell>
-                            <TableCell style={{ color: '#ecf0f1' }} align="right">Amount</TableCell>
-                            <TableCell style={{ color: '#ecf0f1' }} align="right">Payment Book</TableCell>
-                            <TableCell style={{ color: '#ecf0f1' }} align="right">Category</TableCell>
-                            <TableCell style={{ color: '#ecf0f1' }} align="right">Created at</TableCell>
-                        </TableRow>
-                    </TableHead>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                        <TableHead>
+                            <TableRow style={{ backgroundColor: '#34495e' }}>
+                                <TableCell style={{ color: '#ecf0f1' }}>Expense Name</TableCell>
+                                <TableCell style={{ color: '#ecf0f1' }} align="right">Amount</TableCell>
+                                <TableCell style={{ color: '#ecf0f1' }} align="right">Payment Book</TableCell>
+                                <TableCell style={{ color: '#ecf0f1' }} align="right">Category</TableCell>
+                                <TableCell style={{ color: '#ecf0f1' }} align="right">Created at</TableCell>
+                            </TableRow>
+                        </TableHead>
 
-                    <TableBody>
-                        {
-                            expenses.map((row) => (
-                                <TableRow
-                                    key={row._id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    hover
-                                >
-                                    <TableCell align="left">{row.expense_name}</TableCell>
-                                    <TableCell align="right">{row.expense_amount}</TableCell>
-                                    <TableCell align="right">{row.payment_method.book_name}</TableCell>
-                                    <TableCell align="right">{row.expense_categories.category_name}</TableCell>
-                                    <TableCell align="right">{row.createdAt}</TableCell>
-                                </TableRow>
-                            ))
-                        }
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        <TableBody>
+                            {
+                                expenses.map((row) => (
+                                    <TableRow
+                                        key={row._id}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        hover
+                                    >
+                                        <TableCell align="left">{row.expense_name}</TableCell>
+                                        <TableCell align="right">{row.expense_amount}</TableCell>
+                                        <TableCell align="right">{row.payment_method.book_name}</TableCell>
+                                        <TableCell align="right">{row.expense_categories.category_name}</TableCell>
+                                        <TableCell align="right">{row.createdAt}</TableCell>
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
 
-            <Button onClick={gotoPrevious} sx={{ m:1 }}>Previous</Button>
-            <Button onClick={gotoNext}>Next</Button>
+                <Button onClick={gotoPrevious} sx={{ m:1 }}>Previous</Button>
+                <Button onClick={gotoNext}>Next</Button>
 
             </Container>
         </div>
