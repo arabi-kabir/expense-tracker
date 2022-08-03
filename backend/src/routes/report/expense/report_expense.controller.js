@@ -8,8 +8,18 @@ async function getExpenseReport(req, res) {
     const PAGE_SIZE = 20
     const page = parseInt(req.query.page || 0)
     const total = await Expense.countDocuments({})
+    const start_date = new Date(req.query.start_date)
+    const end_date = new Date(req.query.end_date)
 
-    const expenses = await Expense.find({})
+    const searchStartDate = start_date.setHours(0,0,0,0);
+    const searchEndDate = end_date.setHours(29,59,59,999);
+
+    const expenses = await Expense.find({
+            createdAt : {
+                $gte: searchStartDate,
+                $lte: searchEndDate
+            }
+        })
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page)
         .populate('payment_method')
