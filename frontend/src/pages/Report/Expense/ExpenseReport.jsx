@@ -11,11 +11,8 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { DateRangePicker } from 'react-date-range';
 import Grid from '@mui/material/Grid';
-
-import TextField from '@mui/material/TextField';
-// import { DateRangePicker, DateRange } from "@material-ui/pickers";
-import Box from '@mui/material/Box';
 import { addDays } from 'date-fns';
+import moment from 'moment'
 
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -23,10 +20,6 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import Spinner from '../../../components/Spinner'
 import RestClient from '../../../RestAPI/RestClient';
 import AppUrl from '../../../RestAPI/AppUrl';
-
-function createData(expense, amount, payment, category, created_at) {
-    return { expense, amount, payment, category, created_at };
-}
 
 function ExpenseReport() {
     const [expenses, setExpenses] = useState([])
@@ -48,7 +41,13 @@ function ExpenseReport() {
     // Get expenses list
     const getExpensedata = async () => {
         try {
-            const url = AppUrl.expenseReportData + `?page=${pageNumber}`
+            let start_date = moment(date_range[0].startDate, moment.ISO_8601).format()
+            let end_date = moment(date_range[0].endDate, moment.ISO_8601).format()
+            start_date = start_date.substring(0, 10);
+            end_date = end_date.substring(0, 10);
+
+            const url = AppUrl.expenseReportData + `?page=${pageNumber}` + `&start_date=${start_date}` + `&end_date=${end_date}`
+
             return RestClient.getRequest(url)
             .then(result => {
                 const {expenses, totalPages} = result.data;
@@ -61,6 +60,11 @@ function ExpenseReport() {
             console.log(error);
             return error
         }
+    }
+
+    const filterReport = () => {
+        getExpensedata()
+        console.log('filtered');
     }
 
     const gotoPrevious = () => {
@@ -88,7 +92,7 @@ function ExpenseReport() {
             <Container style={{ 'marginTop': '30px' }}>
                 <div>
                     <Grid container spacing={2}>
-                        <Grid item xs={6} style={{ marginBottom: '20px' }}>
+                        <Grid xs={6} style={{ marginBottom: '20px' }}>
                             <DateRangePicker
                                 onChange={item => setDateRange([item.selection])}
                                 showSelectionPreview={true}
@@ -96,8 +100,11 @@ function ExpenseReport() {
                                 months={1}
                                 ranges={date_range}
                                 direction="horizontal"
-                                // style={{ border: '1px solid grey' }}
                             />
+                        </Grid>
+
+                        <Grid xs={6} style={{ marginBottom: '20px' }}>
+                            <Button style={{ float: 'right' }} variant="contained" onClick={() => filterReport()}>Filter report</Button>
                         </Grid>
                     </Grid>
 
