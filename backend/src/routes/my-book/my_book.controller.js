@@ -1,4 +1,5 @@
 const MyBook = require('../../models/my_book.model')
+const Expense = require('../../models/expense.model')
 
 // get all book
 async function getAllBook(req, res) {
@@ -71,10 +72,27 @@ async function deleteBook(req, res) {
     }
 }
 
+// last 20 transaction
+async function lastTransactions(req, res) {
+    try {
+        const expenses = await Expense
+        .find({})
+        .limit(20)
+        .populate('payment_method')
+        .populate('expense_categories')
+        .sort({'createdAt': -1})
+
+        return res.status(200).json(expenses)
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {
     getAllBook,
     insertBook,
     getBook,
     updateBook,
-    deleteBook
+    deleteBook,
+    lastTransactions
 }

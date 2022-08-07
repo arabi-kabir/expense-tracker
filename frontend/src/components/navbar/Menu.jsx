@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import AuthService from '../../services/auth/auth.service'
 
+import LineAxisIcon from '@mui/icons-material/LineAxis';
+
 function Menu() {
 	const navigate = useNavigate()
 	
@@ -27,8 +29,11 @@ function Menu() {
 				<Paper elevation={3}>
 					<Box sx={{ display: 'flex' }}>
 						<Toolbar>
-							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/dashboard'}>Dashboard</Link>
+							<Link style={{ padding: '20px',textDecoration: 'none' }} to={'/dashboard'}>
+								Dashboard
+							</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/expenses'}>Expenses</Link>
+							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/my-book'}>My Book</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/reports'}>Report</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/about'}>About</Link>
 
