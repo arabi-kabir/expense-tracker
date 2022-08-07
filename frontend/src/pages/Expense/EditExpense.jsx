@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import FormControl from '@mui/material/FormControl';
 import SaveIcon from '@mui/icons-material/Save';
 
@@ -56,7 +55,6 @@ function EditExpense() {
 
     // Get expense details
     const getExpenseDetails = async () => {
-      
         try {
             const url = AppUrl.getExpenses + `/${id}`
             return RestClient.getRequest(url)

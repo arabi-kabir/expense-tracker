@@ -13,6 +13,8 @@ import AddExpense from './pages/Expense/AddExpense';
 import EditExpense from './pages/Expense/EditExpense';
 import ReportIndex from './pages/Report/ReportIndex';
 import ExpenseReport from './pages/Report/Expense/ExpenseReport';
+import BookList from './pages/my-book/BookList';
+import BookDetails from './pages/my-book/BookDetails';
 
 function App() {
     return (
@@ -27,8 +29,12 @@ function App() {
 					<Route path='/add-expenses' element={<AddExpense />} />
 					<Route path='/edit-expenses/:id' element={<EditExpense />} />
 
+					<Route path='/my-book' element={<BookList />} />
+					<Route path='/my-book/:id' element={<BookDetails />} />
+
 					<Route path='/reports' element={<ReportIndex />} />
 					<Route path='/report/expense' element={<ExpenseReport />} />
+				
 
 					<Route path='/logout' element={<Logout />} />
 				</Routes>

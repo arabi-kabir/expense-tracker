@@ -13,6 +13,13 @@ import { DateRangePicker } from 'react-date-range';
 import Grid from '@mui/material/Grid';
 import { addDays } from 'date-fns';
 import moment from 'moment'
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import TextField from '@mui/material/TextField';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -33,6 +40,7 @@ function ExpenseReport() {
             key: 'selection'
         }
     ]);
+    const [bookFilter, setBookFilter] = useState('')
 
     useEffect(() => {
         getExpensedata()
@@ -67,6 +75,10 @@ function ExpenseReport() {
         console.log('filtered');
     }
 
+    const handleChange = (event) => {
+        setBookFilter(event.target.value);
+    };
+
     const gotoPrevious = () => {
         setLoading(true)
         setPageNumber(Math.max(0, pageNumber - 1))
@@ -89,28 +101,73 @@ function ExpenseReport() {
         <div>
             <Menu />
 
-            <Container style={{ 'marginTop': '30px' }}>
-                <div>
-                    <Grid container spacing={2}>
-                        <Grid xs={6} style={{ marginBottom: '20px' }}>
-                            <DateRangePicker
-                                onChange={item => setDateRange([item.selection])}
-                                showSelectionPreview={true}
-                                moveRangeOnFirstSelection={false}
-                                months={1}
-                                ranges={date_range}
-                                direction="horizontal"
-                            />
+            <Container style={{ 'marginTop': '10px', marginBottom: '50px' }}>
+                <div style={{  marginBottom: '20px' }}>
+                    <Grid container>
+                        <Grid item xs={6} >
+                            <FormControl sx={{ mt: 1 }} style={{ border: '1px solid #dfe6e9' }}>
+                                <DateRangePicker
+                                    onChange={item => setDateRange([item.selection])}
+                                    showSelectionPreview={true}
+                                    moveRangeOnFirstSelection={false}
+                                    months={1}
+                                    ranges={date_range}
+                                    direction="horizontal"
+                                    style={{ width: '100%' }}
+                                />
+                            </FormControl>
                         </Grid>
 
-                        <Grid xs={6} style={{ marginBottom: '20px' }}>
-                            <Button style={{ float: 'right' }} variant="contained" onClick={() => filterReport()}>Filter report</Button>
+                        <Grid item xs={6} style={{ marginTop: '10px' }} >
+                            <div style={{ padding: '16px', backgroundColor: '#fff' }}>
+                                <FormControl sx={{ mb: 2 }} size="small" style={{ width: '100%' }}>
+                                    <InputLabel id="demo-simple-select-label">Book</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={bookFilter}
+                                        label="Book"
+                                        onChange={handleChange}
+                                        style={{ width: '100%' }}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl sx={{ mb: 2 }} size="small" style={{ width: '100%' }}>
+                                    <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={bookFilter}
+                                        label="Category"
+                                        onChange={handleChange}
+                                        style={{ width: '100%' }}
+                                    >
+                                        <MenuItem value={10}>Ten</MenuItem>
+                                        <MenuItem value={20}>Twenty</MenuItem>
+                                        <MenuItem value={30}>Thirty</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl sx={{ mb: 2 }} style={{ width: '100%' }}>
+                                    <TextField size="small" id="outlined-basic" label="Expense Name" variant="outlined" />
+                                </FormControl>
+
+                                <FormControl sx={{ mr: 2 }}>
+                                    <Button fullWidth variant="contained" onClick={() => filterReport()} startIcon={<FilterAltIcon />}>
+                                        Filter report
+                                        </Button>
+                                </FormControl>
+
+                                <FormControl >
+                                    <Button fullWidth variant="contained" onClick={() => filterReport()} startIcon={<CloudDownloadIcon />}>Download report</Button>
+                                </FormControl>
+                            </div>
                         </Grid>
                     </Grid>
-
-                    {/* <Paper style={{ marginBottom: '20px' }}> */}
-                        
-                    {/* </Paper> */}
                 </div>
                 
                 <TableContainer component={Paper}>
@@ -137,7 +194,7 @@ function ExpenseReport() {
                                         <TableCell align="right">{row.expense_amount}</TableCell>
                                         <TableCell align="right">{row.payment_method.book_name}</TableCell>
                                         <TableCell align="right">{row.expense_categories.category_name}</TableCell>
-                                        <TableCell align="right">{row.createdAt}</TableCell>
+                                        <TableCell align="right">{moment(row.createdAt).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
                                     </TableRow>
                                 ))
                             }
@@ -145,8 +202,10 @@ function ExpenseReport() {
                     </Table>
                 </TableContainer>
 
-                <Button onClick={gotoPrevious} sx={{ m:1 }}>Previous</Button>
-                <Button onClick={gotoNext}>Next</Button>
+                <Button onClick={gotoPrevious} sx={{ mr: 1, mt: 1 }}>Previous</Button>
+                <Button onClick={gotoNext} sx={{ mr: 1, mt: 1 }}>Next</Button>
+
+                <h4 style={{ float: 'right', marginTop: '17px' }}>Page of {pageNumber + 1}</h4>
 
             </Container>
         </div>
