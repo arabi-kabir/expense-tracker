@@ -5,7 +5,7 @@ class AppUrl {
     static authRegister = this.baseUrl + 'auth/register'
 
     static getExpenses = this.baseUrl + 'expense'
-    static getExpenseCategory = this.baseUrl + 'expense-category'
+    static expenseCategory = this.baseUrl + 'expense-category'
     static getMyBook = this.baseUrl + 'my-book'
     static insertExpense = this.baseUrl + 'expense'
 

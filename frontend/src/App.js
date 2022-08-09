@@ -15,6 +15,8 @@ import ReportIndex from './pages/Report/ReportIndex';
 import ExpenseReport from './pages/Report/Expense/ExpenseReport';
 import BookList from './pages/my-book/BookList';
 import BookDetails from './pages/my-book/BookDetails';
+import AddExpenseCategory from './pages/expense-category/AddExpenseCategory';
+import ExpenseCategory from './pages/expense-category/ExpenseCategory';
 
 function App() {
     return (
@@ -34,6 +36,9 @@ function App() {
 
 					<Route path='/reports' element={<ReportIndex />} />
 					<Route path='/report/expense' element={<ExpenseReport />} />
+
+					<Route path='/expense-category' element={<ExpenseCategory />} />
+					<Route path='/expense-category/add' element={<AddExpenseCategory />} />
 				
 
 					<Route path='/logout' element={<Logout />} />

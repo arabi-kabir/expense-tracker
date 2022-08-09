@@ -76,7 +76,7 @@ function EditExpense() {
 
     const getExpensecategory = async () => {
         try {
-            const url = AppUrl.getExpenseCategory
+            const url = AppUrl.expenseCategory
             await RestClient.getRequest(url)
             .then(result => {
                 setExpenseCatyegory(result.data)

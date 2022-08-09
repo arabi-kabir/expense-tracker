@@ -1,3 +1,4 @@
+const uuidv4 = require('uuid/v4');
 const ExpenseCategory = require('../../models/expense_category.model')
 
 // get all expense category
@@ -18,17 +19,37 @@ async function getExpenseCategory(req, res) {
 async function insertExpenseCategory(req, res) {
     const data = req.body
 
-    const expense_category = new ExpenseCategory({
-        category_name: data.category_name,
-        category_status: 'active'
+    if(req.files == null) {
+        return res.status(400).json({
+            msg: 'No file uploaded'
+        })
+    }
+
+    const file = req.files.file
+    const fileName = uuidv4() + file.name
+    file.mv(`${__dirname}/uploads/${fileName}`, err => {
+        if(err) {
+            console.error(err);
+            return res.status(500).send(err)
+        }
+
+        res.json({
+            fileName: fileName,
+            filePath: `/uploads/${fileName}`
+        })
     })
 
-    try {
-        await expense_category.save()
-        res.status(201).send(expense_category)
-    } catch (error) {
-        res.status(400).send(error)
-    }
+    const expense_category = new ExpenseCategory({
+        category_name: data.category_name,
+        category_status: data.category_status,
+    })
+
+    // try {
+    //     await expense_category.save()
+    //     res.status(201).send(expense_category)
+    // } catch (error) {
+    //     res.status(400).send(error)
+    // }
 }
 
 // expense category delete
