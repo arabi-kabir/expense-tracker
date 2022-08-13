@@ -17,7 +17,6 @@ function AddExpenseCategory() {
 		category_status: '',
 		photo: ''
 	})
-	// const [uploadedFile, setUploadedFile] = useState({})
 
 	const onChangeFileUpload = (e) => {
 		setCategory({
@@ -25,7 +24,7 @@ function AddExpenseCategory() {
 			photo: e.target.files[0]
 		})
 
-		console.log(category.photo);
+		console.log(category);
 	}
 
 	const handleChange = (e) => {
@@ -38,25 +37,19 @@ function AddExpenseCategory() {
 	const onSubmit = async (e) => {
 		e.preventDefault()
 
+		console.log(category);
+
 		const formdata = new FormData()
-		formdata.append('file', category.file)
+		formdata.append('photo', category.photo)
 		formdata.append('category_name', category.category_name)
 		formdata.append('category_status', category.category_status)
 
+		console.log(formdata);
+
 		try {
-			const res = await axios.post(AppUrl.expenseCategory, formdata, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
-				}
-			})
+			const res = await axios.post(AppUrl.expenseCategory, formdata)
 
-			const { fileName, filePath } = res.data
-			// setUploadedFile({
-			// 	fileName, 
-			// 	filePath
-			// })
-
-			console.log(filePath);
+			console.log(res);
 		} catch (error) {
 			if(error.response.status === 500) {
 				console.log('There was a problem with the server');
@@ -82,6 +75,8 @@ function AddExpenseCategory() {
 							label="Category Name" 
 							variant="outlined" 
 							name="category_name"
+							value={category.category_name}
+							onChange={handleChange}
 						/>
 
 						<FormControl fullWidth style={{ marginBottom: '20px' }}>
@@ -106,7 +101,9 @@ function AddExpenseCategory() {
 							onChange={onChangeFileUpload}
 						/>
 
-						<button type='submit'>Add category</button>
+						<br />
+
+						<Button sx={{ mt: 2 }} type='submit' variant="contained">Add Category</Button>
 				  </form>
               </div>
             </Container>

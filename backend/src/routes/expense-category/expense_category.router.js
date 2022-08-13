@@ -1,4 +1,5 @@
 const express = require('express')
+const FileUpload = require('../../services/file-upload')
 const {
     getAllExpenseCategory,
     getExpenseCategory,
@@ -7,11 +8,12 @@ const {
     updateExpenseCategory
 } = require('./expense_category.controller')
 
+
 const expenseCategoryRouter = express.Router()
 
 expenseCategoryRouter.get   ('/', getAllExpenseCategory)
 expenseCategoryRouter.get   ('/:id', getExpenseCategory)
-expenseCategoryRouter.post  ('/', insertExpenseCategory)
+expenseCategoryRouter.post  ('/', FileUpload.single('photo'), insertExpenseCategory)
 expenseCategoryRouter.delete('/:id', deleteExpenseCategory)
 expenseCategoryRouter.put   ('/:id', updateExpenseCategory)
 

@@ -19,37 +19,20 @@ async function getExpenseCategory(req, res) {
 async function insertExpenseCategory(req, res) {
     const data = req.body
 
-    if(req.files == null) {
-        return res.status(400).json({
-            msg: 'No file uploaded'
-        })
-    }
-
-    const file = req.files.file
-    const fileName = uuidv4() + file.name
-    file.mv(`${__dirname}/uploads/${fileName}`, err => {
-        if(err) {
-            console.error(err);
-            return res.status(500).send(err)
-        }
-
-        res.json({
-            fileName: fileName,
-            filePath: `/uploads/${fileName}`
-        })
-    })
-
     const expense_category = new ExpenseCategory({
         category_name: data.category_name,
         category_status: data.category_status,
+        category_image: req.file.filename
     })
 
-    // try {
-    //     await expense_category.save()
-    //     res.status(201).send(expense_category)
-    // } catch (error) {
-    //     res.status(400).send(error)
-    // }
+    console.log(expense_category);
+
+    try {
+        await expense_category.save()
+        res.status(201).send(expense_category)
+    } catch (error) {
+        res.status(400).send(error)
+    }
 }
 
 // expense category delete
