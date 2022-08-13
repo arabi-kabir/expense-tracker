@@ -14,17 +14,24 @@ import AppUrl from '../../RestAPI/AppUrl';
 function AddExpenseCategory() {
 	const [category, setCategory] = useState({
 		category_name: '',
-		category_status: 'Active',
-		file: '',
-		filename: ''
+		category_status: '',
+		photo: ''
 	})
-	const [uploadedFile, setUploadedFile] = useState({})
+	// const [uploadedFile, setUploadedFile] = useState({})
 
 	const onChangeFileUpload = (e) => {
 		setCategory({
 			...category,
-			file: e.target.files[0],
-			filename: e.target.files[0].name
+			photo: e.target.files[0]
+		})
+
+		console.log(category.photo);
+	}
+
+	const handleChange = (e) => {
+		setCategory({
+			...category,
+			[e.target.name]: e.target.value
 		})
 	}
 
@@ -44,10 +51,10 @@ function AddExpenseCategory() {
 			})
 
 			const { fileName, filePath } = res.data
-			setUploadedFile({
-				fileName, 
-				filePath
-			})
+			// setUploadedFile({
+			// 	fileName, 
+			// 	filePath
+			// })
 
 			console.log(filePath);
 		} catch (error) {
@@ -67,8 +74,15 @@ function AddExpenseCategory() {
               <h2>Add new expense category</h2>
 
               <div style={{ backgroundColor: '#ffffff', padding: '20px' }}>
-                  <form onSubmit={onSubmit}>
-				  		<TextField fullWidth style={{ marginBottom: '20px' }} id="outlined-basic" label="Category Name" variant="outlined" />
+                  <form onSubmit={onSubmit} encType="multipart/form-data">
+				  		<TextField 
+							fullWidth 
+							style={{ marginBottom: '20px' }} 
+							id="outlined-basic" 
+							label="Category Name" 
+							variant="outlined" 
+							name="category_name"
+						/>
 
 						<FormControl fullWidth style={{ marginBottom: '20px' }}>
 							<InputLabel id="demo-simple-select-label">Category Status</InputLabel>
@@ -77,18 +91,22 @@ function AddExpenseCategory() {
 								id="demo-simple-select"
 								value={category.category_status}
 								label="Category Status"
-								// onChange={handleChange}
+								onChange={handleChange}
+								name="category_status"
 							>
 								<MenuItem value='Active'>Active</MenuItem>
 								<MenuItem value='Inactive'>Inactive</MenuItem>
 							</Select>
 						</FormControl>
 
-						<input type='file' style={{ marginBottom: '20px' }} onChange={onChangeFileUpload} /> <br/>
+						<input
+							type="file"
+							name="photo"
+							accept=".png, .jpg, .jpeg"
+							onChange={onChangeFileUpload}
+						/>
 
-						<Button type='submit' variant="contained" component="label" onClick={onSubmit}>
-							Add New Category
-						</Button>
+						<button type='submit'>Add category</button>
 				  </form>
               </div>
             </Container>
