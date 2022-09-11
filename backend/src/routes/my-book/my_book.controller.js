@@ -23,7 +23,8 @@ async function insertBook(req, res) {
     const myBook = new MyBook({
         book_name: req.body.bookName,
         book_tag: req.body.bookTag,
-        current_balance: 0
+        current_balance: 0,
+        book_image: req.file.filename
     })
    
 
@@ -37,16 +38,22 @@ async function insertBook(req, res) {
 
 // update book
 async function updateBook(req, res) {
+   
     try {
         const doc = await MyBook.findById(req.params.id)
 
+        // res.send(doc);
+
         if(!doc) {
-            res.status(400).send('my book not found')
+            return res.status(400).send('my book not found')
         }
 
         doc.book_name = req.body.bookName
         doc.book_tag = req.body.bookTag
         doc.current_balance = req.body.currentBalance
+        if(req.file) {
+            doc.book_image = req.file.filename
+        }
 
         await doc.save()
 

@@ -12,7 +12,7 @@ const expenseCategorySchema = new mongoose.Schema({
     },
     category_image: {
         type: String,
-        // required: true
+        required: true
     },
     sub_categories: [
         {

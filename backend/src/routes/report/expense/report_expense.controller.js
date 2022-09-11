@@ -15,7 +15,7 @@ async function getExpenseReport(req, res) {
     const searchEndDate = end_date.setHours(29,59,59,999);
 
     const expenses = await Expense.find({
-            createdAt : {
+        expense_date : {
                 $gte: searchStartDate,
                 $lte: searchEndDate
             }

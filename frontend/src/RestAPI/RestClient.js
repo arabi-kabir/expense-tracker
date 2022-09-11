@@ -1,9 +1,19 @@
+import React from 'react'
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import authHeader from "../services/auth/auth-header";
 
 class RestClient {
     static getRequest = (url) => {
+        const token = localStorage.getItem("token");
+
         return axios
-            .get(url)
+            .get(url, {
+                headers: {
+                  'x-access-token': JSON.parse(token)
+                }
+            })
             .then(response => {
                 return response
             })
@@ -13,14 +23,19 @@ class RestClient {
     }
 
     static postRequest = (url, postData) => {
+        //const navigate = useNavigate()
+
         var cors = {
             origin: "http://127.0.0.1:8000"
         }
 
+        const token = localStorage.getItem("token");
+
         let config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': cors.origin
+                'Access-Control-Allow-Origin': cors.origin,
+                'x-access-token': JSON.parse(token)
             }
         }
 
@@ -30,6 +45,12 @@ class RestClient {
                 return response
             })
             .catch(error => {
+                console.log(error.response.data);
+                if(error.response.data == 'Invalid Token') {
+                    toast.success('Please login first')
+                    // navigate('/')
+                    window.location.href = process.env.DOMAIN;
+                }
                 return error
             })
     }
@@ -39,10 +60,13 @@ class RestClient {
             origin: "http://127.0.0.1:8000"
         }
 
+        const token = localStorage.getItem("token");
+
         let config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': cors.origin
+                'Access-Control-Allow-Origin': cors.origin,
+                'x-access-token': JSON.parse(token)
             }
         }
 
@@ -61,10 +85,13 @@ class RestClient {
             origin: "http://127.0.0.1:8000"
         }
 
+        const token = localStorage.getItem("token");
+
         let config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': cors.origin
+                'Access-Control-Allow-Origin': cors.origin,
+                'x-access-token': JSON.parse(token)
             }
         }
 

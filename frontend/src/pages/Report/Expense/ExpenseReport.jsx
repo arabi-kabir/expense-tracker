@@ -11,7 +11,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { DateRangePicker } from 'react-date-range';
 import Grid from '@mui/material/Grid';
-import { addDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 import moment from 'moment'
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -35,7 +35,7 @@ function ExpenseReport() {
     const [loading, setLoading] = useState(true)
     const [date_range, setDateRange] = useState([
         {
-            startDate: new Date(),
+            startDate: subDays(new Date(), 7),
             endDate: addDays(new Date(), 7),
             key: 'selection'
         }

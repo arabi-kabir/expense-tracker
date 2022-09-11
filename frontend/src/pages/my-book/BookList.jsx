@@ -44,6 +44,10 @@ function BookList() {
             <Menu />
 
             <Container style={{ 'marginTop': '30px' }}>
+                <Button variant="contained" sx={{ mb: 2 }} onClick={() => navigate('/my-book/add')}>
+                    Add New Book
+                </Button>
+
                 <Grid container>
                     {
                         books.map((book) => (
@@ -53,7 +57,7 @@ function BookList() {
                                         <CardMedia
                                             component="img"
                                             height="140"
-                                            image="/static/images/cards/contemplative-reptile.jpg"
+                                            image={`/uploads/${book.book_image}`}
                                             alt="green iguana"
                                         />
                                         <CardContent>

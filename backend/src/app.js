@@ -1,11 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
-const fileUpload = require('express-fileupload')
 
 const app = express()
 app.use(cors())
-// app.use(fileUpload())
 
 app.use(express.json())
 

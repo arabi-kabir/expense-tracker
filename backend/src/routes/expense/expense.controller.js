@@ -38,24 +38,31 @@ async function insertExpense(req, res) {
 
     // return res.status(201).send(req.body.expense_name)
 
-    const expense = new Expense({
+    const expense1 = new Expense({
         expense_name: data.expense_name,
         expense_amount: parseInt(data.expense_amount),
         payment_method:  data.payment_method,
         expense_categories: data.expense_categories,
+        expense_date: data.expense_date
     })
+
+    const expense = new Expense();
+    expense.expense_name =  data.expense_name
+    expense.expense_categories = data.expense_categories
+    expense.expense_date = data.expense_date
+    expense.payments = data.payments
 
     try {
         await expense.save()
 
         // send mail
-        Mailer.sendMail({
-            from: '<mail2arabi@gmailcom>', // sender address
-            to: "bar@example.com, baz@example.com", // list of receivers
-            subject: "Expense Added", // Subject line
-            text: "Hello world?", // plain text body
-            html: "<b>Hello world?</b>", // html body
-        });
+        // Mailer.sendMail({
+        //     from: '<mail2arabi@gmailcom>', // sender address
+        //     to: "bar@example.com, baz@example.com", // list of receivers
+        //     subject: "Expense Added", // Subject line
+        //     text: "Hello world?", // plain text body
+        //     html: "<b>Hello world?</b>", // html body
+        // });
 
         res.status(201).send(expense)
     } catch (error) {
@@ -83,8 +90,6 @@ async function deleteExpense(req, res) {
 async function updateExpense(req, res) {
     try {
         const doc = await Expense.findById(req.params.id)
-
-        console.log(doc);
     
         if(!doc) {
             res.status(400).send('expense not found')
@@ -93,7 +98,8 @@ async function updateExpense(req, res) {
             doc.expense_name = data.expense_name,
             doc.expense_amount = data.expense_amount,
             doc.payment_method = data.payment_method,
-            doc.expense_categories = data.expense_categories
+            doc.expense_categories = data.expense_categories,
+            doc.expense_date = data.expense_date
 
             await doc.save()
 
@@ -114,7 +120,7 @@ async function getExpenseChartData(req, res) {
         [
             { 
                 $match: {
-                    createdAt : {
+                    expense_date : {
                         $gte: new Date(firstElement),
                         $lte: new Date(lastElement)
                     }
@@ -123,7 +129,7 @@ async function getExpenseChartData(req, res) {
             { 
                 $group: {
                     _id: {
-                        $dateToString: {format: "%Y-%m-%d", date:"$createdAt"}
+                        $dateToString: {format: "%Y-%m-%d", date:"$expense_date"}
                     },
                     totalSum: {
                         $sum: "$expense_amount"

@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import AuthService from '../../services/auth/auth.service'
 
-import LineAxisIcon from '@mui/icons-material/LineAxis';
-
 function Menu() {
 	const navigate = useNavigate()
 	

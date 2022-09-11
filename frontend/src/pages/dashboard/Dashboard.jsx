@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Container from '@mui/material/Container';
-import Menu from '../components/navbar/Menu'
-import RestClient from '../RestAPI/RestClient';
-import AppUrl from '../RestAPI/AppUrl';
+import Menu from '../../components/navbar/Menu'
+import RestClient from '../../RestAPI/RestClient';
+import AppUrl from '../../RestAPI/AppUrl';
 import Grid from '@mui/material/Grid';
-import { getDatesBetweenTwoDate } from '../services/date/dateFunctions';
-import AreaChart from '../components/chart/AreaChart';
+import { getDatesBetweenTwoDate } from '../../services/date/dateFunctions';
+import AreaChart from '../../components/chart/AreaChart';
 
 function Dashboard() {
     const [labels, setLabels] = useState([])
@@ -13,7 +13,7 @@ function Dashboard() {
 
 	useEffect(() => {
 		getChartData()
-	}, [dataset])
+	}, [])
 
     const getChartData = async () => {
         var today = new Date(); 

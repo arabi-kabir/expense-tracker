@@ -6,18 +6,30 @@ const expenseSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
-    expense_amount: {
-        type: Number,
-        required: true
-    },
-    payment_method: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'MyBook',
-        required: false
-    },
     expense_categories: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ExpenseCategory'
+    },
+    expense_date: {
+        type: Date,
+        ref: 'ExpenseCategory'
+    },
+    payments: [
+        {
+            method: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'MyBook',
+                required: true
+            },
+            amount: {
+                type: Number,
+                required: true
+            }
+        }
+    ],
+    is_deleted: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

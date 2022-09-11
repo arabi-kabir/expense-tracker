@@ -10,8 +10,11 @@ import Select from '@mui/material/Select';
 import { useState } from 'react';
 import axios from 'axios';
 import AppUrl from '../../RestAPI/AppUrl';
+import { useNavigate } from 'react-router-dom';
 
 function AddExpenseCategory() {
+	const navigate = useNavigate()
+
 	const [category, setCategory] = useState({
 		category_name: '',
 		category_status: '',
@@ -37,19 +40,15 @@ function AddExpenseCategory() {
 	const onSubmit = async (e) => {
 		e.preventDefault()
 
-		console.log(category);
-
 		const formdata = new FormData()
 		formdata.append('photo', category.photo)
 		formdata.append('category_name', category.category_name)
 		formdata.append('category_status', category.category_status)
 
-		console.log(formdata);
-
 		try {
 			const res = await axios.post(AppUrl.expenseCategory, formdata)
 
-			console.log(res);
+			navigate('/expense-category')
 		} catch (error) {
 			if(error.response.status === 500) {
 				console.log('There was a problem with the server');
@@ -64,7 +63,7 @@ function AddExpenseCategory() {
             <Menu />
 
             <Container>
-              <h2>Add new expense category</h2>
+              <h2>Add New Expense Category</h2>
 
               <div style={{ backgroundColor: '#ffffff', padding: '20px' }}>
                   <form onSubmit={onSubmit} encType="multipart/form-data">
@@ -103,7 +102,7 @@ function AddExpenseCategory() {
 
 						<br />
 
-						<Button sx={{ mt: 2 }} type='submit' variant="contained">Add Category</Button>
+						<Button sx={{ mt: 2 }} type='submit' variant="contained">Add New Category</Button>
 				  </form>
               </div>
             </Container>

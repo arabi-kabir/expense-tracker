@@ -1,5 +1,6 @@
 import RestClient from '../../RestAPI/RestClient';
 import AppUrl from '../../RestAPI/AppUrl';
+import axios from 'axios';
 
 const login = (email, password) => {
     try {
@@ -7,7 +8,8 @@ const login = (email, password) => {
         .then(result => {
             if(result.status == 200) {
                 localStorage.setItem("user", JSON.stringify(result.data))
-                console.log(result.data);
+                localStorage.setItem("token", JSON.stringify(result.data.token))
+                //console.log(result.data);
             }
             return result;
         })
@@ -29,10 +31,19 @@ const getCurrentUser = () => {
     }
 };
 
+const setAuthToken = token => {
+    if (token) {
+        axios.defaults.headers.common["x-access-token"] = `${token}`;
+    }
+    else
+        delete axios.defaults.headers.common["Authorization"];
+}
+
 const AuthService = {
     login,
     logout,
     getCurrentUser,
+    setAuthToken
 }
 
 export default AuthService;

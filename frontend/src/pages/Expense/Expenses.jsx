@@ -4,18 +4,18 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Link } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Grid from '@mui/material/Grid';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment'
+import Avatar from '@mui/material/Avatar';
 
 import RestClient from '../../RestAPI/RestClient';
 import AppUrl from '../../RestAPI/AppUrl';
 import Menu from '../../components/navbar/Menu'
 import Spinner from '../../components/Spinner'
 import MyModal from '../../components/MyModal';
+import { Chip, Divider } from '@mui/material';
 
   
 function Expenses() {
@@ -161,29 +161,46 @@ function Expenses() {
                             <Card sx={{ m:1 }} variant="outlined" style={{ cursor: 'pointer' }} onClick={() => handleOpen(expense._id)}>
                                 <CardContent style={{ padding: '7px' }} >    
                                     <Grid container spacing={2}>
-                                        <Grid item xs={8} style={{ margin: 'auto' }}>
-                                            <label style={{ cursor: 'pointer' }}>{expense.expense_name}</label>                                    
+                                        <Grid item xs={10} style={{ margin: 'auto' }}>
+                                            <label style={{ cursor: 'pointer', display: 'block', fontWeight: 'bold'}}>
+                                                {expense.expense_name}
+                                            </label>    
+
+                                            <Chip
+                                                avatar={<Avatar alt="Natacha" src={`/uploads/${expense.expense_categories.category_image}`} />}
+                                                label={expense.expense_categories.category_name}
+                                                variant="outlined"
+                                                style={{ marginTop: '5px', marginRight: '5px' }}
+                                            />
+                                            <Chip
+                                               avatar={<Avatar alt="Natacha" src={`/uploads/${expense.payment_method.book_image}`} />}
+                                                label={expense.payment_method.book_name}
+                                                variant="outlined"
+                                                style={{ marginTop: '5px' }}
+                                            />
+                                                           
                                         </Grid>
-                                        <Grid item xs={4}>
-                                            <IconButton 
-                                                aria-label="delete" 
-                                                size="small" 
-                                                color="error"
-                                                style={{ float: 'right' }} 
+                                        <Grid item xs={2} style={{ textAlign: 'center' }}>
+                                            <Button 
+                                                fullWidth 
+                                                sx={{ mb: 1 }} 
+                                                size='small' 
+                                                variant="contained"
+                                                onClick={(event) => handleItemEdit(expense._id, event)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            
+                                            <Button 
+                                                fullWidth 
+                                                sx={{ mt: 1 }} 
+                                                size='small' 
+                                                variant="contained"
+                                                color='error'
                                                 onClick={(event) => handleItemDeleteModalOpen(expense._id, event)}
                                             >
-                                                <DeleteIcon />
-                                            </IconButton>
-
-                                            <IconButton 
-                                                aria-label="delete" 
-                                                size="small" 
-                                                color="primary"
-                                                style={{ float: 'right' }} 
-                                                onClick={(event) => handleItemEdit(expense._id)}
-                                            >
-                                                <ModeEditIcon />
-                                            </IconButton>
+                                                Delete
+                                            </Button>
                                         </Grid>
                                     </Grid>
                                 </CardContent>
@@ -241,6 +258,13 @@ function Expenses() {
                                 </Grid>
                                 <Grid item xs={6}>
                                     {singleExpense.expense_categories.category_name}
+                                </Grid>
+
+                                <Grid item xs={6}>
+                                    <span style={{ fontWeight: 'bold' }}>Expense date </span>                         
+                                </Grid>
+                                <Grid item xs={6}>
+                                    { moment(singleExpense.expense_date).format('LL') }
                                 </Grid>
                             </Grid>
                         </Fragment>

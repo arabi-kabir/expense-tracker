@@ -10,6 +10,10 @@ const myBookSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    book_image: {
+        type: String,
+        required: false
+    },
     current_balance: {
         type: Number,
         required: true,

@@ -7,13 +7,14 @@ class AppUrl {
     static getExpenses = this.baseUrl + 'expense'
     static expenseCategory = this.baseUrl + 'expense-category'
     static getMyBook = this.baseUrl + 'my-book'
+    static myBook = this.baseUrl + 'my-book'
     static insertExpense = this.baseUrl + 'expense'
 
     static expenseChartData = this.baseUrl + 'expense/expense-chart-data'
 
     static expenseReportData = this.baseUrl + 'report/expense'
 
-    static myBook = this.baseUrl + 'my-book'
+    // static myBook = this.baseUrl + 'my-book'
     static myBookLastExpenses = this.baseUrl + 'my-book/expenses'
 }
 

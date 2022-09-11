@@ -1,4 +1,4 @@
-import { Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material'
+import { Card, CardContent, Chip, Container, Grid, Typography, Button } from '@mui/material'
 import React, { Fragment } from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -18,9 +18,11 @@ import Avatar from '@mui/material/Avatar';
 import ImageIcon from '@mui/icons-material/Image';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import MyModal from '../../components/MyModal'
 
 function BookDetails() {
     let { id } = useParams();
+    const navigate = useNavigate()
 
     const [book, setBook] = useState(0)
     const [bookExpenses, setBookExpenses] = useState([])
@@ -52,13 +54,17 @@ function BookDetails() {
             return RestClient.getRequest(url)
             .then(result => {
                 const data = result.data;
-                console.log(data);
                 setBookExpenses(data)
                 setLoading(false)
             })
         } catch (error) {
             return error
         }
+    }
+
+     // Handle expense edit
+     const handleItemEdit = () => {
+        navigate('/my-book/edit/' + id)
     }
 
     if(loading) {
@@ -92,6 +98,14 @@ function BookDetails() {
                         <div >
                             <Card>
                                 <CardContent>
+                                    <Button 
+                                        variant="text" 
+                                        style={{ float: 'right' }}
+                                        onClick={handleItemEdit}
+                                    >
+                                        Change
+                                    </Button>
+
                                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                         Book Details
                                     </Typography>
@@ -156,7 +170,6 @@ function BookDetails() {
                     </Grid>
                 </Grid>
             </Container>
-           
         </Fragment>
     )
 }

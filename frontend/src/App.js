@@ -5,18 +5,22 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
-import About from './pages/About';
-import Dashboard from './pages/Dashboard'
+import About from '../src/pages/about/About';
+import Dashboard from './pages/dashboard/Dashboard'
 import Logout from './components/Logout';
-import Expenses from './pages/Expense/Expenses';
-import AddExpense from './pages/Expense/AddExpense';
-import EditExpense from './pages/Expense/EditExpense';
-import ReportIndex from './pages/Report/ReportIndex';
-import ExpenseReport from './pages/Report/Expense/ExpenseReport';
+import Expenses from './pages/expense/Expenses';
+import AddExpense from './pages/expense/AddExpense';
+import EditExpense from './pages/expense/EditExpense';
+import ReportIndex from './pages/report/ReportIndex';
+import ExpenseReport from './pages/report/Expense/ExpenseReport';
 import BookList from './pages/my-book/BookList';
 import BookDetails from './pages/my-book/BookDetails';
 import AddExpenseCategory from './pages/expense-category/AddExpenseCategory';
 import ExpenseCategory from './pages/expense-category/ExpenseCategory';
+import BookAdd from './pages/my-book/BookAdd';
+import BookEdit from './pages/my-book/BookEdit';
+
+require('dotenv').config()
 
 function App() {
     return (
@@ -32,7 +36,9 @@ function App() {
 					<Route path='/edit-expenses/:id' element={<EditExpense />} />
 
 					<Route path='/my-book' element={<BookList />} />
+					<Route path='/my-book/add' element={<BookAdd />} />
 					<Route path='/my-book/:id' element={<BookDetails />} />
+					<Route path='/my-book/edit/:id' element={<BookEdit />} />
 
 					<Route path='/reports' element={<ReportIndex />} />
 					<Route path='/report/expense' element={<ExpenseReport />} />

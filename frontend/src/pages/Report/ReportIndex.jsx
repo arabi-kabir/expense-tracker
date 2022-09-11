@@ -17,27 +17,27 @@ function ReportIndex() {
            <Menu />
           
             <Container style={{ 'marginTop': '30px' }}>
-                <Card sx={{ maxWidth: 345 }}>
-                    {/* <CardMedia
+                <Card sx={{ maxWidth: 345, cursor: 'pointer' }} onClick={() => navigate('/report/expense')}>
+                    <CardMedia
                         component="img"
-                        height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
+                        height="200"
+                        image="/files/images/expenses.png"
                         alt="green iguana"
-                    /> */}
+                        style={{ width: '100%' }}
+                    />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Expense Report
                         </Typography>
 
                         <Typography variant="body2" color="text.secondary">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
+                            View / Download Expense Report 
                         </Typography>
                     </CardContent>
 
-                    <CardActions>
+                    {/* <CardActions>
                         <Button size="small" onClick={() => navigate('/report/expense')}>view</Button>
-                    </CardActions>
+                    </CardActions> */}
                 </Card>
             </Container>
         </Fragment>

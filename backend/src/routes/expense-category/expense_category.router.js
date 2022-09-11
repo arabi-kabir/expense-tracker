@@ -8,7 +8,6 @@ const {
     updateExpenseCategory
 } = require('./expense_category.controller')
 
-
 const expenseCategoryRouter = express.Router()
 
 expenseCategoryRouter.get   ('/', getAllExpenseCategory)

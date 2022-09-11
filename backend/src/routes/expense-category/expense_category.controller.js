@@ -25,8 +25,6 @@ async function insertExpenseCategory(req, res) {
         category_image: req.file.filename
     })
 
-    console.log(expense_category);
-
     try {
         await expense_category.save()
         res.status(201).send(expense_category)

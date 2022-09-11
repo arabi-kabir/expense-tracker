@@ -1,6 +1,6 @@
 import React from 'react'
 import Container from '@mui/material/Container';
-import Menu from '../components/navbar/Menu'
+import Menu from '../../components/navbar/Menu'
 
 function About() {
     return (

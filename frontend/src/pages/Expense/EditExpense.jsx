@@ -9,6 +9,9 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import SaveIcon from '@mui/icons-material/Save';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import RestClient from '../../RestAPI/RestClient';
 import AppUrl from '../../RestAPI/AppUrl';
@@ -27,6 +30,7 @@ function EditExpense() {
     const [loading, setLoading] = useState(true)
     const [expenseCategory, setExpenseCatyegory] = useState([])
     const [bookList, setBookList] = useState([])
+    const [expenseDateForm, setExpenseDateForm] = useState(new Date())
 
     const handleExpencategoryChange = (event) => {
         setExpenseCategory(event.target.value);
@@ -44,6 +48,9 @@ function EditExpense() {
         setExpenseAmount(event.target.value);
     }
 
+    const handleDateChange = (value) => {
+        setExpenseDateForm(value)
+    }
 
     useEffect(() => {  
         setLoading(true)
@@ -65,8 +72,7 @@ function EditExpense() {
                 setExpenseBook(data.payment_method._id)
                 setExpenseAmount(data.expense_amount)
                 setExpenseCategory(data.expense_categories._id)
-
-               
+                setExpenseDateForm(data.expense_date)
                 setLoading(false)
             })
         } catch (error) {
@@ -108,7 +114,8 @@ function EditExpense() {
                 expense_name: expenseNameForm,
                 expense_amount: expenseAmountForm,
                 payment_method: expenseBookForm,
-                expense_categories: expenseCategoryForm
+                expense_categories: expenseCategoryForm,
+                expense_date: expenseDateForm
             })
             .then(result => {
                 if(result.status) {
@@ -130,7 +137,7 @@ function EditExpense() {
         <div>
             <Menu />
 
-            <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px' }}>
+            <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px', backgroundColor: '#fff' }}>
                 <div style={{ paddingTop: '10px', textAlign: 'center' }}>
                     <h3 style={{ fontWeight: 'lighter' }}>Edit Expense</h3>
 
@@ -193,6 +200,18 @@ function EditExpense() {
                                 ))
                             } 
                             </Select>
+                        </FormControl>
+
+                        <FormControl sx={{ mb: 2 }} style={{ width: '100%' }}>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DesktopDatePicker
+                                    label="Expense Date"
+                                    inputFormat="dd/MM/yyyy"
+                                    value={expenseDateForm}
+                                    onChange={handleDateChange}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
                         </FormControl>
 
                         <Button 
