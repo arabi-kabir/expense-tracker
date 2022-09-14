@@ -9,7 +9,6 @@ const login = (email, password) => {
             if(result.status == 200) {
                 localStorage.setItem("user", JSON.stringify(result.data))
                 localStorage.setItem("token", JSON.stringify(result.data.token))
-                //console.log(result.data);
             }
             return result;
         })
@@ -20,6 +19,7 @@ const login = (email, password) => {
 
 const logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
 }
 
 const getCurrentUser = () => {

@@ -19,6 +19,7 @@ import AddExpenseCategory from './pages/expense-category/AddExpenseCategory';
 import ExpenseCategory from './pages/expense-category/ExpenseCategory';
 import BookAdd from './pages/my-book/BookAdd';
 import BookEdit from './pages/my-book/BookEdit';
+import ProtectedRoutes from './components/ProtectedRoutes';
 
 require('dotenv').config()
 
@@ -29,25 +30,27 @@ function App() {
 				<Routes>
 					<Route path='/' element={<Login />} />
 					<Route path='/register' element={<Register />} />
-					<Route path='/about' element={<About />} />
-					<Route path='/dashboard' element={<Dashboard />} />
-					<Route path='/expenses' element={<Expenses />} />
-					<Route path='/add-expenses' element={<AddExpense />} />
-					<Route path='/edit-expenses/:id' element={<EditExpense />} />
-
-					<Route path='/my-book' element={<BookList />} />
-					<Route path='/my-book/add' element={<BookAdd />} />
-					<Route path='/my-book/:id' element={<BookDetails />} />
-					<Route path='/my-book/edit/:id' element={<BookEdit />} />
-
-					<Route path='/reports' element={<ReportIndex />} />
-					<Route path='/report/expense' element={<ExpenseReport />} />
-
-					<Route path='/expense-category' element={<ExpenseCategory />} />
-					<Route path='/expense-category/add' element={<AddExpenseCategory />} />
-				
-
 					<Route path='/logout' element={<Logout />} />
+
+					<Route element={<ProtectedRoutes/>}>
+						<Route path='/dashboard' element={<Dashboard />} />
+						<Route path='/about' element={<About />} />
+					
+						<Route path='/expenses' element={<Expenses />} />
+						<Route path='/add-expenses' element={<AddExpense />} />
+						<Route path='/edit-expenses/:id' element={<EditExpense />} />
+
+						<Route path='/my-book' element={<BookList />} />
+						<Route path='/my-book/add' element={<BookAdd />} />
+						<Route path='/my-book/:id' element={<BookDetails />} />
+						<Route path='/my-book/edit/:id' element={<BookEdit />} />
+
+						<Route path='/reports' element={<ReportIndex />} />
+						<Route path='/report/expense' element={<ExpenseReport />} />
+
+						<Route path='/expense-category' element={<ExpenseCategory />} />
+						<Route path='/expense-category/add' element={<AddExpenseCategory />} />
+					</Route>
 				</Routes>
 			</Router>
             

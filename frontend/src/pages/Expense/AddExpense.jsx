@@ -13,7 +13,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Paper from '@mui/material/Paper';
-
 import RestClient from '../../RestAPI/RestClient';
 import AppUrl from '../../RestAPI/AppUrl';
 import Menu from '../../components/navbar/Menu'
@@ -25,52 +24,21 @@ import Payment from '../../components/reusable/Payment';
 function AddExpense() {
     const navigate = useNavigate()
 
-    const [expenseNameForm, setExpenseName] = useState('')
-    const [expenseAmountForm, setExpenseAmount] = useState('')
-    const [expenseCategoryForm, setExpenseCategory] = useState('')
-    const [expenseBookForm, setExpenseBook] = useState('')
     const [loading, setLoading] = useState(true)
     const [expenseCategory, setExpenseCatyegory] = useState([])
     const [bookList, setBookList] = useState([])
-    const [expenseDateForm, setExpenseDateForm] = useState(new Date())
-
-    const [paymentCounter, setPaymentCounter] = useState(1);
 
     const [expense, setExpense] = useState({
 		expenseName: '',
 		expenseCategory: '',
         expenseDate: new Date(),
         payments: [
-            { method1: null, amount1: null }
+            {
+                'method' : '',
+                'amount' : 0,
+            }
         ]
 	})
-
-    const handleChange = (e) => {
-		setExpense({
-			...expense,
-			[e.target.name]: e.target.value
-		})
-	}
-
-    // const handleExpencategoryChange = (event) => {
-    //     setExpenseCategory(event.target.value);
-    // }
-
-    // const handleExpenseBookChange = (event) => {
-    //     setExpenseBook(event.target.value);
-    // }
-
-    // const handleExpenseName = (event) => {
-    //     setExpenseName(event.target.value);
-    // }
-
-    // const handleExpenseAmount = (event) => {
-    //     setExpenseAmount(event.target.value);
-    // }
-
-    // const handleDateChange = (value) => {
-    //     setExpenseDateForm(value)
-    // }
 
     useEffect(() => {  
         getExpensecategory()
@@ -79,6 +47,49 @@ function AddExpense() {
         setLoading(false)
     }, [])
 
+    const handleChange = (e) => {
+        if(e.target != undefined) {
+            setExpense({
+                ...expense,
+                [e.target.name]: e.target.value
+            })
+        } else {
+            setExpense({
+                ...expense,
+                expenseDate: e 
+            })
+        }
+	}
+
+    const handlePaymentDataChange = (e) => {
+        const input_name = (e.target.name);
+        let name = input_name.substring(0, 6)
+
+        if(name === 'amount') {
+            const indexNum = input_name.substring(6, 7)
+            let newPayment = expense.payments;
+            newPayment[indexNum].amount = e.target.value
+
+            setExpense({
+                ...expense,
+                payments: [
+                    ...newPayment
+                ]
+            })
+        } else {
+            const indexNum = input_name.substring(7, 8) 
+
+            let newPayment = expense.payments; 
+            newPayment[indexNum].method = e.target.value
+
+            setExpense({
+                ...expense,
+                payments: [
+                    ...newPayment
+                ]
+            })
+        }
+    }
 
     const getExpensecategory = async () => {
         try {
@@ -107,26 +118,40 @@ function AddExpense() {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
 
-        try {
-            const url = AppUrl.insertExpense
-            return await RestClient.postRequest(url, {
-                expense_name: expenseNameForm,
-                expense_amount: expenseAmountForm,
-                payment_method: expenseBookForm,
-                expense_categories: expenseCategoryForm,
-                expense_date: expenseDateForm
-            })
-            .then(result => {
-                if(result.status) {
-                    navigate('/expenses')
-                    toast.success('Expense Added')
-                }
-            })
-        } catch (error) {
-            console.log(error);
-            toast.success('Something is wrong')
-        }
+        // try {
+        //     const url = AppUrl.insertExpense
+        //     return await RestClient.postRequest(url, {
+        //         expense_name: expenseNameForm,
+        //         expense_amount: expenseAmountForm,
+        //         payment_method: expenseBookForm,
+        //         expense_categories: expenseCategoryForm,
+        //         expense_date: expenseDateForm
+        //     .then(result => {
+        //         if(result.status) {
+        //             navigate('/expenses')
+        //             toast.success('Expense Added')
+        //         }
+        //     })
+        // } catch (error) {
+        //     console.log(error);
+        //     toast.success('Something is wrong')
+        // }
     } 
+
+    const addPayment = () => {
+        let newPaymentObj = {
+            method : '',
+            amount : 0,
+        }
+
+        setExpense({
+            ...expense,
+			payments : [
+                ...expense.payments,
+                newPaymentObj
+            ]
+        })
+    }
 
     if(loading) {
         return <Spinner />
@@ -146,8 +171,9 @@ function AddExpense() {
                             style={{ width: '100%' }} 
                             id="outlined-basic" 
                             label="Expense Name" 
-                            variant="outlined" 
-                            value={expenseNameForm}
+                            variant="outlined"
+                            name='expenseName' 
+                            value={expense.expenseName}
                             onChange={handleChange}
                         />
 
@@ -158,9 +184,10 @@ function AddExpense() {
                                     <Select
                                         labelId="demo-simple-select-helper-label"
                                         id="demo-simple-select-helper"
-                                        value={expenseCategoryForm}
+                                        value={expense.expenseCategory}
                                         label="Expense Category"
                                         onChange={handleChange}
+                                        name='expenseCategory' 
                                     >
                                     <MenuItem value="">
                                         <em>None</em>
@@ -180,9 +207,10 @@ function AddExpense() {
                                         <DesktopDatePicker
                                             label="Expense Date"
                                             inputFormat="dd/MM/yyyy"
-                                            value={expenseDateForm}
+                                            value={expense.expenseDate}
                                             onChange={handleChange}
                                             renderInput={(params) => <TextField {...params} />}
+                                            name='expenseDate'
                                         />
                                     </LocalizationProvider>
                                 </FormControl>
@@ -193,54 +221,12 @@ function AddExpense() {
                         {/* Payment Fields */}
                         <Paper sx={{ p: 2, mb: 3 }} elevation={3}>
                             <p>Payments</p> 
-                            <Button sx={{m: 2}}>+ add</Button>
-                            {/* <Payment bookList={bookList} handleChange={handleChange} /> */}
-
+                            <Button sx={{m: 1}} onClick={addPayment}>+ add</Button>
                             {
-                                // expense.payments.map(payment => {
-
-                                //     return (<Payment bookList={bookList} handleChange={handleChange} />);
-
-                                //     // console.log('asa');
-                                //     // return (
-                                //     //     <div>
-                                //     //     <Payment bookList={bookList} handleChange={handleChange} />
-                                //     //     </div>
-                                //     // )
-                                // })
-
                                 expense.payments.map((index, i) => {
-                                    // console.log(index);
-                                    (<Payment bookList={bookList} handleChange={handleChange} />)
+                                    return <Payment key={i} bookList={bookList} handleChange={handlePaymentDataChange} data={index} index={i} />
                                 })
                             }
-{/* 
-                        {(
-                            console.log(expense.payments)
-                            expense.payments.forEach(payment => {
-                                console.log(payment);
-                                (<Payment bookList={bookList} handleChange={handleChange} />)
-                            })
-
-                            (
-                                // for (let $index = 0; $index < $paymentCounter; $index++) {
-                                // // const element = array[index];
-                                
-                                // }
-                            )
-                            // (
-                            //     <div>
-                            //           <Payment bookList={bookList} handleChange={handleChange} />
-                            //           <Payment bookList={bookList} handleChange={handleChange} />
-                            //     </div>
-                            //     // <Payment bookList={bookList} handleChange={handleChange} />
-                            //     // <Payment bookList={bookList} handleChange={handleChange} />
-                            // )
-                        )} */}
-
-
-
-                            
                         </Paper>
 
                         <Button 

@@ -1,8 +1,10 @@
 import React from 'react'
-import { Grid, Select, TextField } from '@mui/material';
+import { Button, Grid, Select, TextField } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function Payment(props) {
     return (
@@ -14,8 +16,9 @@ function Payment(props) {
                         <Select
                             labelId="demo-simple-select-helper-label"
                             id="demo-simple-select-helper"
-                            value={1}
+                            value={props.data.method}
                             label="Book"
+                            name={`payment${props.index}`}
                             onChange={props.handleChange}
                         >
                         <MenuItem value="">
@@ -30,16 +33,31 @@ function Payment(props) {
                     </FormControl>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                     <TextField 
                         sx={{ mb: 2 }} 
                         style={{ width: '100%' }} 
                         id="outlined-basic" 
                         label="Expense Amount" 
                         variant="outlined" 
-                        value={1}
+                        value={props.data.amount}
+                        name={`amount${props.index}`}
                         onChange={props.handleChange}
                     />
+                </Grid>
+
+                <Grid item xs={1}>
+                    {/* <Button
+                          fullWidth 
+                          variant="contained" 
+                          color="error"
+                    >
+                        Remove
+                    </Button> */}
+
+                    <IconButton aria-label="delete" size="large" color='error'>
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
                 </Grid>
             </Grid>
         </div>

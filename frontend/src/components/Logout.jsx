@@ -7,7 +7,6 @@ function Logout() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.log('use eff called');
         logout()
     },[])
 
@@ -15,11 +14,7 @@ function Logout() {
         try {
             toast.success('Logged out successfully')
             await AuthService.logout()
-
             navigate('/')
-
-        
-            console.log('ji');
         } catch (error) {
             console.log(error);
             toast.error('Opps! something is wrong.')

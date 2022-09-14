@@ -34,7 +34,7 @@ function Expenses() {
     // const pages = new Array(totalPages).fill(null).map((v, i) => i)
 
     useEffect(() => {  
-        getExpensedata()
+        // getExpensedata()
     }, [pageNumber])
 
     // Open expense view modal
@@ -133,22 +133,20 @@ function Expenses() {
         setPageNumber(Math.min(totalPages - 1, pageNumber + 1))
     }
 
-    if(loading) {
-        return <Spinner />
-    }
+    // if(loading) {
+    //     return <Spinner />
+    // }
 
     return (
         <div>
             <Menu />
 
-            <Container maxWidth="md" style={{ marginTop: '20px', paddingBottom: '0', paddingRight: '0', textAlign: 'right' }}>
-                
-            <Link to={'/add-expenses'} style={{ textDecoration: 'none' }}>
-                <Button variant="contained" color="success">Add New Expense</Button>
-            </Link>
-
-                
+            <Container maxWidth="md" style={{ marginTop: '20px', paddingBottom: '0', paddingRight: '0', textAlign: 'right' }}>    
+                <Link to={'/add-expenses'} style={{ textDecoration: 'none' }}>
+                    <Button variant="contained" color="success">Add New Expense</Button>
+                </Link>
             </Container>
+
 
             <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px', backgroundColor: '#ffffff', marginBottom: '40px' }}>
                 <div style={{ paddingTop: '10px', textAlign: 'center' }}>
