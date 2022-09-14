@@ -47,14 +47,6 @@ function Payment(props) {
                 </Grid>
 
                 <Grid item xs={1}>
-                    {/* <Button
-                          fullWidth 
-                          variant="contained" 
-                          color="error"
-                    >
-                        Remove
-                    </Button> */}
-
                     <IconButton aria-label="delete" size="large" color='error'>
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
