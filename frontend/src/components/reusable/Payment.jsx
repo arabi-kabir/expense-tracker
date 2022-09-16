@@ -7,6 +7,23 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function Payment(props) {
+
+    const deleteItem = () => {
+        props.hanldeDeleteItem(props.index)
+    }
+
+    const renderDeleteIcon = () => {
+        if(props.index != 0) {
+            return (
+                <Grid item xs={1}>
+                    <IconButton aria-label="delete" size="large" color='error' onClick={deleteItem}>
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
+                </Grid>
+            )
+        }
+    }
+
     return (
         <div>
             <Grid container spacing={2}>
@@ -45,12 +62,7 @@ function Payment(props) {
                         onChange={props.handleChange}
                     />
                 </Grid>
-
-                <Grid item xs={1}>
-                    <IconButton aria-label="delete" size="large" color='error'>
-                        <DeleteIcon fontSize="inherit" />
-                    </IconButton>
-                </Grid>
+                { renderDeleteIcon() }
             </Grid>
         </div>
     )
