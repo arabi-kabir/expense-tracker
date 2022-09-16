@@ -36,16 +36,6 @@ async function getExpense(req, res) {
 async function insertExpense(req, res) {
     const data = req.body
 
-    // return res.status(201).send(req.body.expense_name)
-
-    const expense1 = new Expense({
-        expense_name: data.expense_name,
-        expense_amount: parseInt(data.expense_amount),
-        payment_method:  data.payment_method,
-        expense_categories: data.expense_categories,
-        expense_date: data.expense_date
-    })
-
     const expense = new Expense();
     expense.expense_name =  data.expense_name
     expense.expense_categories = data.expense_categories
