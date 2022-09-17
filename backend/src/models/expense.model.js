@@ -19,7 +19,8 @@ const expenseSchema = new mongoose.Schema({
             method: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'MyBook',
-                required: true
+                required: true,
+                autopopulate: true
             },
             amount: {
                 type: Number,
@@ -34,6 +35,8 @@ const expenseSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+expenseSchema.plugin(require('mongoose-autopopulate'));
 
 const Expense = mongoose.model('Expense', expenseSchema)
 

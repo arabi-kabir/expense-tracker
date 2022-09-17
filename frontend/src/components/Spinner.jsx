@@ -1,5 +1,5 @@
 import React from 'react'
-import spinner from '../components/assets/spinner.gif'
+import spinner from '../components/assets/spinner_2.gif'
 import Grid from '@mui/material/Grid';
 
 function Spinner() {

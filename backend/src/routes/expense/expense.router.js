@@ -12,7 +12,7 @@ const auth = require('../../middleware/auth')
 
 const expenseRouter = express.Router()
 
-expenseRouter.use(auth)
+// expenseRouter.use(auth)
 
 expenseRouter.get   ('/', getAllExpense)
 expenseRouter.get   ('/:id', getExpense)

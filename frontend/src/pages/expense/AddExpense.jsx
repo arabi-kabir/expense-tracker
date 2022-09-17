@@ -7,7 +7,6 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import FormControl from '@mui/material/FormControl';
-import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +18,9 @@ import Menu from '../../components/navbar/Menu'
 import Spinner from '../../components/Spinner'
 import { Grid } from '@mui/material';
 import Payment from '../../components/reusable/Payment';
+import IconButton from '@mui/material/IconButton';
+import ExpenseSchema from '../../services/validation/expense.insert.validator'
+import toast from 'react-hot-toast';
 
   
 function AddExpense() {
@@ -67,8 +69,8 @@ function AddExpense() {
 
         if(name === 'amount') {
             const indexNum = input_name.substring(6, 7)
-            let newPayment = expense.payments;
-            newPayment[indexNum].amount = e.target.value
+            let newPayment = [...expense.payments];
+            newPayment[indexNum].amount = Number(e.target.value)
 
             setExpense({
                 ...expense,
@@ -79,7 +81,7 @@ function AddExpense() {
         } else {
             const indexNum = input_name.substring(7, 8) 
 
-            let newPayment = expense.payments; 
+            let newPayment = [...expense.payments]; 
             newPayment[indexNum].method = e.target.value
 
             setExpense({
@@ -89,6 +91,20 @@ function AddExpense() {
                 ]
             })
         }
+    }
+
+    const handleDeleteItem = (indexValue) => {
+        toast.success('Payment item deleted')
+
+        let payment = expense.payments
+        payment.splice(indexValue, 1)
+
+        setExpense({
+            ...expense,
+            payments: [
+                ...payment
+            ]
+        })
     }
 
     const getExpensecategory = async () => {
@@ -118,28 +134,37 @@ function AddExpense() {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
 
-        // try {
-        //     const url = AppUrl.insertExpense
-        //     return await RestClient.postRequest(url, {
-        //         expense_name: expenseNameForm,
-        //         expense_amount: expenseAmountForm,
-        //         payment_method: expenseBookForm,
-        //         expense_categories: expenseCategoryForm,
-        //         expense_date: expenseDateForm
-        //     .then(result => {
-        //         if(result.status) {
-        //             navigate('/expenses')
-        //             toast.success('Expense Added')
-        //         }
-        //     })
-        // } catch (error) {
-        //     console.log(error);
-        //     toast.success('Something is wrong')
-        // }
+        // data validation
+        const errors = ExpenseSchema.validate(expense)
+
+        if(errors.length == 0) {
+            try {
+                const url = AppUrl.insertExpense
+                return await RestClient.postRequest(url, {
+                    expense_name: expense.expenseName,
+                    expense_categories: expense.expenseCategory,
+                    expense_date: expense.expenseDate,
+                    payments: expense.payments
+                })
+                .then(result => {
+                    if(result.status == 201) {
+                        navigate('/expenses')
+                        toast.success('Expense Added Successfully')
+                    }
+                })
+            } catch (error) {
+                console.log(error);
+                toast.success('Something is wrong')
+            }
+        } else {
+            errors.forEach(error => {
+                toast.error(error.message)
+            })
+        }
     } 
 
     const addPayment = () => {
-        let newPaymentObj = {
+        const newPaymentObj = {
             method : '',
             amount : 0,
         }
@@ -163,9 +188,9 @@ function AddExpense() {
 
             <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px', marginBottom: '40px', backgroundColor: '#fff' }}>
                 <div style={{ paddingTop: '10px', textAlign: 'center' }}>
-                    <h3 style={{ fontWeight: 'lighter' }}>Add New Expense</h3>
+                    <h3 style={{ fontWeight: 'normal', float: 'left' }}>Expense Information</h3>
 
-                    <form>
+                    {/* <form> */}
                         <TextField 
                             sx={{ mb: 2 }} 
                             style={{ width: '100%' }} 
@@ -220,11 +245,31 @@ function AddExpense() {
                    
                         {/* Payment Fields */}
                         <Paper sx={{ p: 2, mb: 3 }} elevation={3}>
-                            <p>Payments</p> 
-                            <Button sx={{m: 1}} onClick={addPayment}>+ add</Button>
+                            <Grid container>
+                                <Grid item xs={6}>
+                                    <h3 style={{ fontWeight: 'normal', float: 'left' }}>Payment Information</h3>
+                                </Grid>
+
+                                <Grid item xs={6}>
+                                    <IconButton aria-label="add" onClick={addPayment} style={{ float: 'right' }}>
+                                        <AddCircleIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                           
+                            
                             {
                                 expense.payments.map((index, i) => {
-                                    return <Payment key={i} bookList={bookList} handleChange={handlePaymentDataChange} data={index} index={i} />
+                                    return (
+                                        <Payment 
+                                            key={i} 
+                                            bookList={bookList} 
+                                            handleChange={handlePaymentDataChange} 
+                                            data={index} 
+                                            index={i} 
+                                            hanldeDeleteItem={handleDeleteItem}
+                                        />
+                                    )
                                 })
                             }
                         </Paper>
@@ -238,7 +283,7 @@ function AddExpense() {
                         >
                                 Submit Expense
                         </Button>
-                    </form>
+                    {/* </form> */}
                 </div>
             </Container>
         </div>

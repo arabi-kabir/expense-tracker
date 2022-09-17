@@ -5,17 +5,17 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
-import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment'
 import Avatar from '@mui/material/Avatar';
-
+import toast from 'react-hot-toast';
 import RestClient from '../../RestAPI/RestClient';
 import AppUrl from '../../RestAPI/AppUrl';
 import Menu from '../../components/navbar/Menu'
 import Spinner from '../../components/Spinner'
 import MyModal from '../../components/MyModal';
-import { Chip, Divider } from '@mui/material';
+import { Chip, Divider, Paper } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
   
 function Expenses() {
@@ -34,7 +34,7 @@ function Expenses() {
     // const pages = new Array(totalPages).fill(null).map((v, i) => i)
 
     useEffect(() => {  
-        // getExpensedata()
+        getExpensedata()
     }, [pageNumber])
 
     // Open expense view modal
@@ -103,10 +103,10 @@ function Expenses() {
             return RestClient.deleteRequest(url)
             .then(result => {
                 if(result.status == 200) {
+                    toast.success('Expense Deleted')
                     getExpensedata()
                     handleItemDeleteModalClose()
                     setLoading(false)
-                    toast.success('Expense Deleted')
                 }
             })
         } catch (error) {
@@ -133,55 +133,115 @@ function Expenses() {
         setPageNumber(Math.min(totalPages - 1, pageNumber + 1))
     }
 
-    // if(loading) {
-    //     return <Spinner />
-    // }
+    if(loading) {
+        return <Spinner />
+    }
 
     return (
         <div>
             <Menu />
 
-            <Container maxWidth="md" style={{ marginTop: '20px', paddingBottom: '0', paddingRight: '0', textAlign: 'right' }}>    
-                <Link to={'/add-expenses'} style={{ textDecoration: 'none' }}>
-                    <Button variant="contained" color="success">Add New Expense</Button>
-                </Link>
+            <Container maxWidth="md" style={{ marginTop: '20px', padding: 0 }}> 
+                <Grid container>
+                    <Grid item xs={6}>
+                        <h3 style={{ margin: 0, float: 'left', padding: '0', paddingTop: '8px' }}>Expenses</h3>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <Link to={'/add-expenses'} style={{ textDecoration: 'none', float: 'right' }}>
+                            <Button variant="contained" color="success">Add New Expense</Button>
+                        </Link>
+                    </Grid>
+                </Grid>   
             </Container>
 
 
-            <Container maxWidth="md" style={{ border: '1px solid #95a5a6', marginTop: '20px', paddingBottom: '20px', backgroundColor: '#ffffff', marginBottom: '40px' }}>
-                <div style={{ paddingTop: '10px', textAlign: 'center' }}>
-                    <h3>Expenses</h3>
-                </div>
-
+            <Container 
+                maxWidth="md" 
+                style={{ 
+                    border: '1px solid #95a5a6', 
+                    marginTop: '20px', 
+                    paddingBottom: '20px', 
+                    backgroundColor: '#ffffff', 
+                    marginBottom: '40px',
+                    paddingTop: '20px'
+                }}
+            >
                 {
                     expenses.map((expense) => (
-                        <div key={expense._id}>
-                            <Card sx={{ m:1 }} variant="outlined" style={{ cursor: 'pointer' }} onClick={() => handleOpen(expense._id)}>
-                                <CardContent style={{ padding: '7px' }} >    
+                        <div key={expense._id} >
+                            <Card 
+                                sx={{ m:2 }} 
+                                variant="outlined" 
+                                style={{ cursor: 'pointer', border: '1px solid #95a5a6', borderRadius: '10px', padding: '10px' }} 
+                                onClick={() => handleOpen(expense._id)}
+                            >
+                                <CardContent style={{ padding: '7px' }} >   
                                     <Grid container spacing={2}>
-                                        <Grid item xs={10} style={{ margin: 'auto' }}>
-                                            <label style={{ cursor: 'pointer', display: 'block', fontWeight: 'bold'}}>
+                                        <Grid item xs={4}>  
+                                            <h4 style={{ margin: '3px' }}>
                                                 {expense.expense_name}
-                                            </label>    
+                                            </h4>
+                                        </Grid>
 
+                                        <Grid item xs={5}>  
+                                            <Chip
+                                                icon={<AccessTimeIcon />}
+                                                label={moment(expense.expense_date).format('dddd, MMMM Do YYYY, h:mm:ss a')}
+                                                variant="outlined"
+                                                style={{ marginTop: '5px', marginRight: '5px' }}
+                                                sx={{ mb:2 }}
+                                            >
+
+                                            </Chip>
+                                        </Grid>
+
+                                        <Grid item xs={3} style={{ textAlign: 'center' }}>  
                                             <Chip
                                                 avatar={<Avatar alt="Natacha" src={`/uploads/${expense.expense_categories.category_image}`} />}
                                                 label={expense.expense_categories.category_name}
                                                 variant="outlined"
                                                 style={{ marginTop: '5px', marginRight: '5px' }}
+                                                sx={{ mb:2 }}
                                             />
-                                            <Chip
-                                               avatar={<Avatar alt="Natacha" src={`/uploads/${expense.payment_method.book_image}`} />}
-                                                label={expense.payment_method.book_name}
-                                                variant="outlined"
-                                                style={{ marginTop: '5px' }}
-                                            />
-                                                           
                                         </Grid>
-                                        <Grid item xs={2} style={{ textAlign: 'center' }}>
+                                    </Grid>
+
+                                    <Grid container spacing={2}>
+                                        <Grid xs={9} item>
+                                            {
+                                                expense.payments.map((payment) => (
+                                                    <Paper sx={{ p: 1, mb: 1 }} variant="outlined" key={payment.method._id}>
+                                                        <Grid container>
+                                                            <Grid xs={6} item>
+                                                                <Grid container>
+                                                                    <Grid item xs={2} style={{ textAlign: 'center' }}>
+                                                                        <Avatar 
+                                                                            alt={ payment.method.book_name }
+                                                                            src={`/uploads/${payment.method.book_image}`} 
+                                                                            sx={{ width: 24, height: 24, border: '1px solid #bdc3c7', textAlign: 'center' }}
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid item xs={10} style={{ paddingTop: '3px' }}>
+                                                                        <span >
+                                                                            { payment.method.book_name }
+                                                                        </span>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Grid>
+
+                                                            <Grid xs={6} item> 
+                                                                &#2547; { payment.amount }
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Paper>
+                                                ))
+                                            }
+                                        </Grid>
+
+                                        <Grid xs={3} item>
                                             <Button 
                                                 fullWidth 
-                                                sx={{ mb: 1 }} 
                                                 size='small' 
                                                 variant="contained"
                                                 onClick={(event) => handleItemEdit(expense._id, event)}

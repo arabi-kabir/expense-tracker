@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { ToastContainer, toast } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
-
+// import { ToastContainer, toast } from "react-toastify"
+// import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import About from '../src/pages/about/About';
@@ -12,7 +11,7 @@ import Expenses from './pages/expense/Expenses';
 import AddExpense from './pages/expense/AddExpense';
 import EditExpense from './pages/expense/EditExpense';
 import ReportIndex from './pages/report/ReportIndex';
-import ExpenseReport from './pages/report/Expense/ExpenseReport';
+import ExpenseReport from './pages/report/expense/ExpenseReport';
 import BookList from './pages/my-book/BookList';
 import BookDetails from './pages/my-book/BookDetails';
 import AddExpenseCategory from './pages/expense-category/AddExpenseCategory';
@@ -20,6 +19,8 @@ import ExpenseCategory from './pages/expense-category/ExpenseCategory';
 import BookAdd from './pages/my-book/BookAdd';
 import BookEdit from './pages/my-book/BookEdit';
 import ProtectedRoutes from './components/ProtectedRoutes';
+
+import toast, { Toaster } from 'react-hot-toast';
 
 require('dotenv').config()
 
@@ -54,7 +55,7 @@ function App() {
 				</Routes>
 			</Router>
             
-			<ToastContainer
+			{/* <ToastContainer
 				position="top-right"
 				autoClose={2000}
 				hideProgressBar={false}
@@ -64,7 +65,8 @@ function App() {
 				pauseOnFocusLoss={false}
 				draggable
 				pauseOnHover
-			/>
+			/> */}
+			<Toaster />
         </Fragment>
     )
 }

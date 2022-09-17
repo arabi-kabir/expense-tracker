@@ -1,12 +1,11 @@
 import React from 'react'
 import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import authHeader from "../services/auth/auth-header";
 
 class RestClient {
     static getRequest = (url) => {
         const token = localStorage.getItem("token");
+
+        // console.log(token);
 
         return axios
             .get(url, {
@@ -23,13 +22,13 @@ class RestClient {
     }
 
     static postRequest = (url, postData) => {
-        //const navigate = useNavigate()
-
         var cors = {
             origin: "http://127.0.0.1:8000"
         }
 
         const token = localStorage.getItem("token");
+
+        console.log(token);
 
         let config = {
             headers: {
@@ -47,8 +46,7 @@ class RestClient {
             .catch(error => {
                 console.log(error.response.data);
                 if(error.response.data == 'Invalid Token') {
-                    toast.success('Please login first')
-                    // navigate('/')
+                    //toast.success('Please login first')
                     window.location.href = process.env.DOMAIN;
                 }
                 return error
@@ -61,7 +59,8 @@ class RestClient {
         }
 
         const token = localStorage.getItem("token");
-
+        console.log(token);
+        
         let config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -76,6 +75,11 @@ class RestClient {
                 return response
             })
             .catch(error => {
+                console.log(error.response.data);
+                if(error.response.data == 'Invalid Token') {
+                    //toast.success('Please login first')
+                    //window.location.href = process.env.DOMAIN;
+                }
                 return error
             })
     }

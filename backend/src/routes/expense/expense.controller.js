@@ -13,7 +13,7 @@ async function getAllExpense(req, res) {
     const expenses = await Expense.find({})
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page)
-        .populate('payment_method')
+        // .populate('payements')
         .populate('expense_categories')
         .sort({'createdAt': -1})
 
