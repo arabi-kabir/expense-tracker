@@ -27,11 +27,6 @@ function EditExpense() {
     const navigate = useNavigate()
     let { id } = useParams();
 
-    // const [expenseNameForm, setExpenseName] = useState('')
-    // const [expenseAmountForm, setExpenseAmount] = useState('')
-    // const [expenseCategoryForm, setExpenseCategory] = useState('')
-    // const [expenseBookForm, setExpenseBook] = useState('')
-
     const [loading, setLoading] = useState(true)
     const [expenseCategory, setExpenseCatyegory] = useState([])
     const [bookList, setBookList] = useState([])
@@ -47,26 +42,6 @@ function EditExpense() {
             }
         ]
 	})
-
-    // const handleExpencategoryChange = (event) => {
-    //     setExpenseCategory(event.target.value);
-    // }
-
-    // const handleExpenseBookChange = (event) => {
-    //     setExpenseBook(event.target.value);
-    // }
-
-    // const handleExpenseName = (event) => {
-    //     setExpenseName(event.target.value);
-    // }
-
-    // const handleExpenseAmount = (event) => {
-    //     setExpenseAmount(event.target.value);
-    // }
-
-    // const handleDateChange = (value) => {
-    //     setExpenseDateForm(value)
-    // }
 
     useEffect(() => {  
         setLoading(true)
@@ -84,17 +59,19 @@ function EditExpense() {
             .then(result => {
                 const data = result.data;
 
-                // console.log(data);
+                const paymentsData = data.payments.map(payment => {
+                    return {
+                        method: payment.method._id,
+                        amount: payment.amount
+                    }
+                })
 
                 setExpense({
                     expenseName: data.expense_name,
                     expenseCategory: data.expense_categories._id,
                     expenseDate: data.expense_date,
-                    payments: data.payments
+                    payments: paymentsData
                 })
-
-                console.log(expense);
-
 
                 setLoading(false)
             })
@@ -218,17 +195,18 @@ function EditExpense() {
 
         if(errors.length == 0) {
             try {
-                const url = AppUrl.insertExpense
-                return await RestClient.postRequest(url, {
+                const url = AppUrl.getExpenses + `/${id}`
+
+                return await RestClient.updateRequest(url, {
                     expense_name: expense.expenseName,
                     expense_categories: expense.expenseCategory,
                     expense_date: expense.expenseDate,
                     payments: expense.payments
                 })
                 .then(result => {
-                    if(result.status == 201) {
-                        navigate('/expenses')
-                        toast.success('Expense Added Successfully')
+                    if(result.status == 200) {
+                        //navigate('/expenses')
+                        toast.success('Expense Updated Successfully')
                     }
                 })
             } catch (error) {

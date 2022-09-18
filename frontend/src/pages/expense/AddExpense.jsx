@@ -21,10 +21,27 @@ import Payment from '../../components/reusable/Payment';
 import IconButton from '@mui/material/IconButton';
 import ExpenseSchema from '../../services/validation/expense.insert.validator'
 import toast from 'react-hot-toast';
+import ReactAudioPlayer from 'react-audio-player';
 
+import useSound from 'use-sound';
+// import succe_sound from '../../components/assets/sound/success_sound.mp3';
   
 function AddExpense() {
     const navigate = useNavigate()
+
+    const soundUrl = '../../components/assets/sound/success_sound.mp3';
+
+    const [playbackRate, setPlaybackRate] = React.useState(0.75);
+    const [play] = useSound(soundUrl, {
+        playbackRate,
+        volume: 0.5,
+      });
+
+      const handleClick = () => {
+        setPlaybackRate(playbackRate + 0.1);
+        play();
+      };
+    
 
     const [loading, setLoading] = useState(true)
     const [expenseCategory, setExpenseCatyegory] = useState([])
@@ -43,6 +60,17 @@ function AddExpense() {
 	})
 
     useEffect(() => {  
+
+        handleClick()
+
+        // {play}
+
+    //     <ReactAudioPlayer
+    //     src={"/files/sound/success_sound.mp3"}
+    //     autoPlay={true}
+    //     controls
+    // />
+
         getExpensecategory()
         getMyBookList()
 
@@ -148,6 +176,9 @@ function AddExpense() {
                 })
                 .then(result => {
                     if(result.status == 201) {
+                       
+                        handleClick()
+
                         navigate('/expenses')
                         toast.success('Expense Added Successfully')
                     }

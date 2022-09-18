@@ -28,7 +28,6 @@ async function getExpense(req, res) {
         return res.status(200).json(await Expense
             .findOne({ _id: req.params.id })
             .populate('expense_categories')
-            .select({ 'expense_name':1, 'expense_categories':1, 'expense_date':1 })
         )
     } catch (error) {
         res.status(400).send(error)
@@ -89,10 +88,9 @@ async function updateExpense(req, res) {
         } else {
             const data = req.body 
             doc.expense_name = data.expense_name,
-            doc.expense_amount = data.expense_amount,
-            doc.payment_method = data.payment_method,
             doc.expense_categories = data.expense_categories,
-            doc.expense_date = data.expense_date
+            doc.expense_date = data.expense_date,
+            doc.payments = data.payments
 
             await doc.save()
 
