@@ -190,100 +190,98 @@ function AddExpense() {
                 <div style={{ paddingTop: '10px', textAlign: 'center' }}>
                     <h3 style={{ fontWeight: 'normal', float: 'left' }}>Expense Information</h3>
 
-                    {/* <form> */}
-                        <TextField 
-                            sx={{ mb: 2 }} 
-                            style={{ width: '100%' }} 
-                            id="outlined-basic" 
-                            label="Expense Name" 
-                            variant="outlined"
-                            name='expenseName' 
-                            value={expense.expenseName}
-                            onChange={handleChange}
-                        />
+                    <TextField 
+                        sx={{ mb: 2 }} 
+                        style={{ width: '100%' }} 
+                        id="outlined-basic" 
+                        label="Expense Name" 
+                        variant="outlined"
+                        name='expenseName' 
+                        value={expense.expenseName}
+                        onChange={handleChange}
+                    />
 
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                                <FormControl sx={{ mb: 2 }} style={{ width: '100%' }}>
-                                    <InputLabel id="demo-simple-select-helper-label">Expense Category</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-helper-label"
-                                        id="demo-simple-select-helper"
-                                        value={expense.expenseCategory}
-                                        label="Expense Category"
+                    <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                            <FormControl sx={{ mb: 2 }} style={{ width: '100%' }}>
+                                <InputLabel id="demo-simple-select-helper-label">Expense Category</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-helper-label"
+                                    id="demo-simple-select-helper"
+                                    value={expense.expenseCategory}
+                                    label="Expense Category"
+                                    onChange={handleChange}
+                                    name='expenseCategory' 
+                                >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                {
+                                    expenseCategory.map((category) => (
+                                        <MenuItem value={category._id} key={category._id}>{category.category_name}</MenuItem>
+                                    ))
+                                }                
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <FormControl sx={{ mb: 2 }} style={{ width: '100%' }}>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DesktopDatePicker
+                                        label="Expense Date"
+                                        inputFormat="dd/MM/yyyy"
+                                        value={expense.expenseDate}
                                         onChange={handleChange}
-                                        name='expenseCategory' 
-                                    >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {
-                                        expenseCategory.map((category) => (
-                                            <MenuItem value={category._id} key={category._id}>{category.category_name}</MenuItem>
-                                        ))
-                                    }                
-                                    </Select>
-                                </FormControl>
+                                        renderInput={(params) => <TextField {...params} />}
+                                        name='expenseDate'
+                                    />
+                                </LocalizationProvider>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    
+                
+                    {/* Payment Fields */}
+                    <Paper sx={{ p: 2, mb: 3 }} elevation={3}>
+                        <Grid container>
+                            <Grid item xs={6}>
+                                <h3 style={{ fontWeight: 'normal', float: 'left' }}>Payment Information</h3>
                             </Grid>
 
                             <Grid item xs={6}>
-                                <FormControl sx={{ mb: 2 }} style={{ width: '100%' }}>
-                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <DesktopDatePicker
-                                            label="Expense Date"
-                                            inputFormat="dd/MM/yyyy"
-                                            value={expense.expenseDate}
-                                            onChange={handleChange}
-                                            renderInput={(params) => <TextField {...params} />}
-                                            name='expenseDate'
-                                        />
-                                    </LocalizationProvider>
-                                </FormControl>
+                                <IconButton aria-label="add" onClick={addPayment} style={{ float: 'right' }}>
+                                    <AddCircleIcon />
+                                </IconButton>
                             </Grid>
                         </Grid>
                         
-                   
-                        {/* Payment Fields */}
-                        <Paper sx={{ p: 2, mb: 3 }} elevation={3}>
-                            <Grid container>
-                                <Grid item xs={6}>
-                                    <h3 style={{ fontWeight: 'normal', float: 'left' }}>Payment Information</h3>
-                                </Grid>
+                        
+                        {
+                            expense.payments.map((index, i) => {
+                                return (
+                                    <Payment 
+                                        key={i} 
+                                        bookList={bookList} 
+                                        handleChange={handlePaymentDataChange} 
+                                        data={index} 
+                                        index={i} 
+                                        hanldeDeleteItem={handleDeleteItem}
+                                    />
+                                )
+                            })
+                        }
+                    </Paper>
 
-                                <Grid item xs={6}>
-                                    <IconButton aria-label="add" onClick={addPayment} style={{ float: 'right' }}>
-                                        <AddCircleIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                           
-                            
-                            {
-                                expense.payments.map((index, i) => {
-                                    return (
-                                        <Payment 
-                                            key={i} 
-                                            bookList={bookList} 
-                                            handleChange={handlePaymentDataChange} 
-                                            data={index} 
-                                            index={i} 
-                                            hanldeDeleteItem={handleDeleteItem}
-                                        />
-                                    )
-                                })
-                            }
-                        </Paper>
-
-                        <Button 
-                            fullWidth 
-                            startIcon={<AddCircleIcon />} 
-                            variant="contained" 
-                            color="success"
-                            onClick={handleFormSubmit}
-                        >
-                                Submit Expense
-                        </Button>
-                    {/* </form> */}
+                    <Button 
+                        fullWidth 
+                        startIcon={<AddCircleIcon />} 
+                        variant="contained" 
+                        color="success"
+                        onClick={handleFormSubmit}
+                    >
+                            Submit Expense
+                    </Button>
                 </div>
             </Container>
         </div>

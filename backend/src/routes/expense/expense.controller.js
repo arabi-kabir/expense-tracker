@@ -13,7 +13,6 @@ async function getAllExpense(req, res) {
     const expenses = await Expense.find({})
         .limit(PAGE_SIZE)
         .skip(PAGE_SIZE * page)
-        // .populate('payements')
         .populate('expense_categories')
         .sort({'createdAt': -1})
 
@@ -26,7 +25,11 @@ async function getAllExpense(req, res) {
 // get a expense
 async function getExpense(req, res) {
     try { 
-        return res.status(200).json(await Expense.findOne({ _id: req.params.id }).populate('payment_method').populate('expense_categories'))
+        return res.status(200).json(await Expense
+            .findOne({ _id: req.params.id })
+            .populate('expense_categories')
+            .select({ 'expense_name':1, 'expense_categories':1, 'expense_date':1 })
+        )
     } catch (error) {
         res.status(400).send(error)
     }
