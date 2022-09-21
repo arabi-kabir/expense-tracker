@@ -117,13 +117,31 @@ async function getExpenseChartData(req, res) {
                     }
                 } 
             },
+            {
+                $unwind: {
+                    path: '$payments'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'mybooks',
+                    localField: 'payments.method',
+                    foreignField: '_id',
+                    as: 'result'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$result'
+                }
+            },
             { 
                 $group: {
                     _id: {
                         $dateToString: {format: "%Y-%m-%d", date:"$expense_date"}
                     },
                     totalSum: {
-                        $sum: "$expense_amount"
+                         $sum: "$payments.amount"
                     }
                 } 
             }

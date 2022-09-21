@@ -48,7 +48,7 @@ function BookList() {
                     Add New Book
                 </Button>
 
-                <Grid container>
+                <Grid container spacing={2}>
                     {
                         books.map((book) => (
                             <Grid item xs={4} style={{ marginBottom: '30px' }} key={book._id}>

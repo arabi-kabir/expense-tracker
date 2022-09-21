@@ -27,6 +27,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import Spinner from '../../../components/Spinner'
 import RestClient from '../../../RestAPI/RestClient';
 import AppUrl from '../../../RestAPI/AppUrl';
+import { Avatar, Chip } from '@mui/material';
 
 function ExpenseReport() {
     const [expenses, setExpenses] = useState([])
@@ -59,6 +60,9 @@ function ExpenseReport() {
             return RestClient.getRequest(url)
             .then(result => {
                 const {expenses, totalPages} = result.data;
+
+                console.log(expenses);
+
                 setExpenses(expenses)
                 setTotalpages(totalPages)
                 setLoading(false)
@@ -103,9 +107,9 @@ function ExpenseReport() {
 
             <Container style={{ 'marginTop': '10px', marginBottom: '50px' }}>
                 <div style={{  marginBottom: '20px' }}>
-                    <Grid container>
-                        <Grid item xs={6} >
-                            <FormControl sx={{ mt: 1 }} style={{ border: '1px solid #dfe6e9' }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={6} style={{ marginTop: '10px' }}>
+                            <Paper>
                                 <DateRangePicker
                                     onChange={item => setDateRange([item.selection])}
                                     showSelectionPreview={true}
@@ -113,13 +117,14 @@ function ExpenseReport() {
                                     months={1}
                                     ranges={date_range}
                                     direction="horizontal"
-                                    style={{ width: '100%' }}
+                                    style={{ width: '90%' }}
                                 />
-                            </FormControl>
+                            </Paper>
                         </Grid>
 
                         <Grid item xs={6} style={{ marginTop: '10px' }} >
-                            <div style={{ padding: '16px', backgroundColor: '#fff' }}>
+                            <Paper>
+                            <div style={{ padding: '16px' }}>
                                 <FormControl sx={{ mb: 2 }} size="small" style={{ width: '100%' }}>
                                     <InputLabel id="demo-simple-select-label">Book</InputLabel>
                                     <Select
@@ -166,6 +171,7 @@ function ExpenseReport() {
                                     <Button fullWidth variant="contained" onClick={() => filterReport()} startIcon={<CloudDownloadIcon />}>Download report</Button>
                                 </FormControl>
                             </div>
+                            </Paper>
                         </Grid>
                     </Grid>
                 </div>
@@ -175,9 +181,9 @@ function ExpenseReport() {
                         <TableHead>
                             <TableRow style={{ backgroundColor: '#34495e' }}>
                                 <TableCell style={{ color: '#ecf0f1' }}>Expense Name</TableCell>
-                                <TableCell style={{ color: '#ecf0f1' }} align="right">Amount</TableCell>
-                                <TableCell style={{ color: '#ecf0f1' }} align="right">Payment Book</TableCell>
                                 <TableCell style={{ color: '#ecf0f1' }} align="right">Category</TableCell>
+                                <TableCell style={{ color: '#ecf0f1' }} align="right">Total Amount</TableCell>
+                                <TableCell style={{ color: '#ecf0f1' }} align="right">Payment</TableCell>
                                 <TableCell style={{ color: '#ecf0f1' }} align="right">Created at</TableCell>
                             </TableRow>
                         </TableHead>
@@ -191,10 +197,38 @@ function ExpenseReport() {
                                         hover
                                     >
                                         <TableCell align="left">{row.expense_name}</TableCell>
-                                        <TableCell align="right">{row.expense_amount}</TableCell>
-                                        <TableCell align="right">{row.payment_method.book_name}</TableCell>
-                                        <TableCell align="right">{row.expense_categories.category_name}</TableCell>
-                                        <TableCell align="right">{moment(row.createdAt).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
+                                        <TableCell align="right">{row.expense_category[0].category_name}</TableCell>
+                                        <TableCell align="right">{row.expense_total}</TableCell>
+                                        <TableCell align="right">
+                                        {
+                                            row.paymentData.map((payment) => (
+                                                <Grid container sx={{ mb: 0 }} key={payment._id}>
+                                                    <Grid item xs={6}>
+                                                        <Chip
+                                                            avatar={<Avatar alt="Natacha" src={`/uploads/${payment.book_image}`}  />}
+                                                            label={payment.book_name}
+                                                            variant="outlined"
+                                                            size="small"
+                                                        >
+                                                            
+                                                        </Chip>
+                                                   
+                                                    </Grid>
+
+                                                    <Grid item xs={6}>
+                                                        {payment.amount}
+                                                    </Grid>
+                                                    {/* <TableCell align="right">{payment.book_name}</TableCell>
+                                                    <TableCell align="right">{payment.amount}</TableCell> */}
+                                                </Grid>
+                                          
+                                            ))
+                                        }
+                                        </TableCell>
+                                       
+                                        {/* <TableCell align="right">{row.payment_method.book_name}</TableCell> */}
+                                     
+                                        <TableCell align="right">{moment(row.expense_date).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
                                     </TableRow>
                                 ))
                             }

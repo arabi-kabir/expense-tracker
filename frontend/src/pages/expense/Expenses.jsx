@@ -174,7 +174,7 @@ function Expenses() {
                                 sx={{ m:2 }} 
                                 variant="outlined" 
                                 style={{ cursor: 'pointer', border: '1px solid #95a5a6', borderRadius: '10px', padding: '10px' }} 
-                                onClick={() => handleOpen(expense._id)}
+                                // onClick={() => handleOpen(expense._id)}
                             >
                                 <CardContent style={{ padding: '7px' }} >   
                                     <Grid container spacing={2}>

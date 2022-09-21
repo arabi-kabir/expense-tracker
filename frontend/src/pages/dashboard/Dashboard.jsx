@@ -33,6 +33,8 @@ function Dashboard() {
                 if(result.status == 200) {
                     result = result.data
 
+                    console.log(result);
+
                     setLabels(last30Days)
                     setDataset(result)
                 }
@@ -50,7 +52,7 @@ function Dashboard() {
                 <h4 style={{ textAlign: 'center', 'paddingTop': '20px' }}>Dashboard</h4>
 
                 <Grid container>
-                    <Grid item xs={12} style={{ border: '1px solid #EEF1F1', padding: '10px'}}>
+                    <Grid item xs={12} style={{ border: '1px solid #EEF1F1', padding: '10px', marginBottom: '30px'}}>
                         {
                             dataset && (
                                 <AreaChart labels={labels} dataset={dataset} />
@@ -59,9 +61,9 @@ function Dashboard() {
                       
                     </Grid>
 
-                    <Grid item xs={12} style={{ border: '1px solid #EEF1F1', marginTop: '20px'}}>
+                    {/* <Grid item xs={12} style={{ border: '1px solid #EEF1F1', marginTop: '20px'}}>
                         last 5 items
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Container>
         </div>
