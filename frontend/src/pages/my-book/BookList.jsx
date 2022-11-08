@@ -28,7 +28,6 @@ function BookList() {
             .then(result => {
                 const data = result.data;
                 setBooks(data);
-                console.log(data);
             })
         } catch (error) {
             console.log(error);
@@ -52,7 +51,7 @@ function BookList() {
                     {
                         books.map((book) => (
                             <Grid item xs={4} style={{ marginBottom: '30px' }} key={book._id}>
-                                <Card sx={{ maxWidth: 345 }}>
+                                <Card sx={{ maxWidth: 345 }} onClick={() => openBook(book._id)}>
                                     <CardActionArea>
                                         <CardMedia
                                             component="img"

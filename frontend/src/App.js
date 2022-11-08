@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-// import { ToastContainer, toast } from "react-toastify"
-// import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import About from '../src/pages/about/About';
@@ -27,7 +25,7 @@ require('dotenv').config()
 function App() {
     return (
         <Fragment>
-			<Router>			
+			<Router>
 				<Routes>
 					<Route path='/' element={<Login />} />
 					<Route path='/register' element={<Register />} />
@@ -36,7 +34,7 @@ function App() {
 					<Route element={<ProtectedRoutes/>}>
 						<Route path='/dashboard' element={<Dashboard />} />
 						<Route path='/about' element={<About />} />
-					
+
 						<Route path='/expenses' element={<Expenses />} />
 						<Route path='/add-expenses' element={<AddExpense />} />
 						<Route path='/edit-expenses/:id' element={<EditExpense />} />
@@ -54,7 +52,7 @@ function App() {
 					</Route>
 				</Routes>
 			</Router>
-            
+
 			{/* <ToastContainer
 				position="top-right"
 				autoClose={2000}
@@ -72,5 +70,3 @@ function App() {
 }
 
 export default App
-
-

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Container from '@mui/material/Container';
 import Menu from '../../../components/navbar/Menu'
 import Table from '@mui/material/Table';
@@ -33,6 +33,13 @@ function ExpenseReport() {
     const [expenses, setExpenses] = useState([])
     const [totalPages, setTotalpages] = useState(0)
     const [pageNumber, setPageNumber] = useState(0)
+    const [books, setBooks] = useState([])
+    const [expensecategory, setExpensecategory] = useState([])
+    const [filterData, setFilterData] = useState({
+        book: '',
+        category: '',
+        expenseName: ''
+    })
     const [loading, setLoading] = useState(true)
     const [date_range, setDateRange] = useState([
         {
@@ -41,10 +48,11 @@ function ExpenseReport() {
             key: 'selection'
         }
     ]);
-    const [bookFilter, setBookFilter] = useState('')
 
     useEffect(() => {
         getExpensedata()
+        getBookList()
+        getAllExpensecategory()
     }, [pageNumber])
 
     // Get expenses list
@@ -55,14 +63,13 @@ function ExpenseReport() {
             start_date = start_date.substring(0, 10);
             end_date = end_date.substring(0, 10);
 
-            const url = AppUrl.expenseReportData + `?page=${pageNumber}` + `&start_date=${start_date}` + `&end_date=${end_date}`
+            const url = AppUrl.expenseReportData + `?page=${pageNumber}` + `&start_date=${start_date}` + `&end_date=${end_date}` + `&book=${filterData.book}` + `&category=${filterData.category}` + `&expenseName=${filterData.expenseName}`
 
-            return RestClient.getRequest(url)
+            console.log(url);
+
+            RestClient.getRequest(url)
             .then(result => {
                 const {expenses, totalPages} = result.data;
-
-                console.log(expenses);
-
                 setExpenses(expenses)
                 setTotalpages(totalPages)
                 setLoading(false)
@@ -74,13 +81,49 @@ function ExpenseReport() {
         }
     }
 
-    const filterReport = () => {
-        getExpensedata()
-        console.log('filtered');
+    // Get book List
+    const getBookList = async () => {
+        try {
+            try {
+                const url = AppUrl.myBook 
+                RestClient.getRequest(url)
+                .then(result => {
+                    const data = result.data;
+                    setBooks(data);
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        } catch (error) {
+            
+        }
     }
 
-    const handleChange = (event) => {
-        setBookFilter(event.target.value);
+    // Get category list
+    const getAllExpensecategory = async () => {
+        try {
+            const url = AppUrl.expenseCategory 
+            return RestClient.getRequest(url)
+            .then(result => {
+                const data = result.data;
+                setExpensecategory(data);
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const filterReport = () => {
+        getExpensedata()
+    }
+
+    const handleChange = (e) => {
+        if(e.target.value != null) {
+            setFilterData({
+                ...filterData,
+                [e.target.name]: e.target.value
+            });
+        }
     };
 
     const gotoPrevious = () => {
@@ -130,14 +173,18 @@ function ExpenseReport() {
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        value={bookFilter}
+                                        value={filterData.book}
                                         label="Book"
+                                        name='book'
                                         onChange={handleChange}
                                         style={{ width: '100%' }}
                                     >
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                        <MenuItem value=""><em>None</em></MenuItem>
+                                        {
+                                            books.map((book) => (
+                                                <MenuItem key={book._id} value={book._id}>{book.book_name}</MenuItem>
+                                            ))
+                                        }
                                     </Select>
                                 </FormControl>
 
@@ -146,19 +193,23 @@ function ExpenseReport() {
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        value={bookFilter}
+                                        value={filterData.category}
                                         label="Category"
+                                        name='category'
                                         onChange={handleChange}
                                         style={{ width: '100%' }}
                                     >
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
+                                          <MenuItem value=""><em>None</em></MenuItem>
+                                        {
+                                            expensecategory.map((category) => (
+                                                <MenuItem key={category._id} value={category._id}>{category.category_name}</MenuItem>
+                                            ))
+                                        }
                                     </Select>
                                 </FormControl>
 
                                 <FormControl sx={{ mb: 2 }} style={{ width: '100%' }}>
-                                    <TextField size="small" id="outlined-basic" label="Expense Name" variant="outlined" />
+                                    <TextField onChange={handleChange} size="small" name='expenseName' id="outlined-basic" label="Expense Name" variant="outlined" value={filterData.expenseName} />
                                 </FormControl>
 
                                 <FormControl sx={{ mr: 2 }}>
@@ -218,28 +269,35 @@ function ExpenseReport() {
                                                     <Grid item xs={6}>
                                                         {payment.amount}
                                                     </Grid>
-                                                    {/* <TableCell align="right">{payment.book_name}</TableCell>
-                                                    <TableCell align="right">{payment.amount}</TableCell> */}
                                                 </Grid>
                                           
                                             ))
                                         }
                                         </TableCell>
-                                       
-                                        {/* <TableCell align="right">{row.payment_method.book_name}</TableCell> */}
-                                     
                                         <TableCell align="right">{moment(row.expense_date).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
                                     </TableRow>
                                 ))
                             }
+                            {
+                                expenses.length == 0 && (
+                                    <TableRow> <TableCell style={{ textAlign: 'center' }} colSpan={5}>No records found</TableCell> </TableRow>
+                                )
+                            }
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {
+                    expenses.length > 0 && (
+                        <Fragment>
+                            <Button onClick={gotoPrevious} sx={{ mr: 1, mt: 1 }}>Previous</Button>
+                            <Button onClick={gotoNext} sx={{ mr: 1, mt: 1 }}>Next</Button>
 
-                <Button onClick={gotoPrevious} sx={{ mr: 1, mt: 1 }}>Previous</Button>
-                <Button onClick={gotoNext} sx={{ mr: 1, mt: 1 }}>Next</Button>
+                            <h4 style={{ float: 'right', marginTop: '17px' }}>Page of {pageNumber + 1}</h4>
+                        </Fragment>
+                    )
+                }
 
-                <h4 style={{ float: 'right', marginTop: '17px' }}>Page of {pageNumber + 1}</h4>
+ 
 
             </Container>
         </div>

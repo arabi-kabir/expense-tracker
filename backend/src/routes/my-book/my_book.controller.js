@@ -1,3 +1,4 @@
+var ObjectId = require('mongodb').ObjectID;
 const MyBook = require('../../models/my_book.model')
 const Expense = require('../../models/expense.model')
 
@@ -82,16 +83,38 @@ async function deleteBook(req, res) {
 // last 20 transaction
 async function lastTransactions(req, res) {
     try {
-        const expenses = await Expense
-        .find({})
-        .limit(20)
-        .populate('payment_method')
-        .populate('expense_categories')
-        .sort({'createdAt': -1})
+        const expenses = await Expense.aggregate([
+            {
+                $unwind: {
+                    path: '$payments'
+                }
+            },
+            {
+                $match: {
+                    "payments.method": ObjectId(req.params.id)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'expensecategories',
+                    localField: 'expense_categories',
+                    foreignField: '_id',
+                    as: 'category'
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            },
+            {
+                $limit: 20
+            }
+        ])
 
         return res.status(200).json(expenses)
     } catch (error) {
-        
+        console.log(error);
     }
 }
 

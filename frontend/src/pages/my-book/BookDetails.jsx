@@ -49,16 +49,20 @@ function BookDetails() {
     }
 
     const getLastTransaction = () => {
+        console.log('hi');
         try {
             const url = AppUrl.myBookLastExpenses + `/${id}`
-            return RestClient.getRequest(url)
+            
+            RestClient.getRequest(url)
             .then(result => {
+                console.log(result);
                 const data = result.data;
                 setBookExpenses(data)
                 setLoading(false)
+                console.log(bookExpenses);
             })
         } catch (error) {
-            return error
+            console.log(error);
         }
     }
 
@@ -111,9 +115,22 @@ function BookDetails() {
                                     </Typography>
 
                                     <Typography component="div">
-                                        <b>Book Name</b> : {book.book_name} <br />
-                                        <b>Book Tag</b> : <Chip size="small"  label={book.book_tag} color="success" /> <br />
-                                        <b>Created at</b> : {moment(book.createdAt).format('YYYY-MM-DD')}
+                                        <table style={{ width: '50%' }}>
+                                            <tbody>
+                                                <tr>
+                                                    <td><b>Book Name</b></td>
+                                                    <td>{book.book_name}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Book Tag</b></td>
+                                                    <td><Chip size="small"  label={book.book_tag} color="success" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Created at</b></td>
+                                                    <td>{moment(book.createdAt).format('YYYY-MM-DD')}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -135,33 +152,17 @@ function BookDetails() {
                                         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                                             {
                                                 bookExpenses.map((expense) => (
-                                                    <ListItem>
+                                                    <ListItem style={{ maxWidth: '100%' }}>
                                                         <ListItemAvatar>
-                                                        <Avatar>
-                                                            <ImageIcon />
-                                                        </Avatar>
+                                                            <Avatar style={{ border: '1px solid #dfe6e9' }} alt='image' src={`/uploads/${expense.category[0].category_image}`} />
                                                         </ListItemAvatar>
-                                                        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+                                                        <ListItemText 
+                                                            primary={expense.expense_name} 
+                                                            secondary={`[ ${expense.payments.amount} ] ${moment(expense.createdAt).format('dddd, MMMM Do YYYY')}`}
+                                                        />
                                                     </ListItem>
                                                 ))
                                             }
-                                            
-                                            {/* <ListItem>
-                                                <ListItemAvatar>
-                                                <Avatar>
-                                                    <WorkIcon />
-                                                </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText primary="Work" secondary="Jan 7, 2014" />
-                                            </ListItem>
-                                            <ListItem>
-                                                <ListItemAvatar>
-                                                <Avatar>
-                                                    <BeachAccessIcon />
-                                                </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText primary="Vacation" secondary="July 20, 2014" />
-                                            </ListItem> */}
                                         </List>
                                     </Typography>
                                 </CardContent>

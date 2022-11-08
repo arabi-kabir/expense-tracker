@@ -1,12 +1,15 @@
 const { log } = require('console');
-const { response } = require('express');
 var mongoose = require('mongoose');
 const util = require('util')
+var ObjectId = require('mongodb').ObjectID;
 
 const Expense = require('../../../models/expense.model')
 
 // get all expense
 async function getExpenseReport(req, res) {
+
+    console.log(req.query);
+
     const PAGE_SIZE = 20
     const page = parseInt(req.query.page || 0)
     const total = await Expense.countDocuments({})
@@ -16,22 +19,35 @@ async function getExpenseReport(req, res) {
     const searchStartDate = start_date.setHours(0,0,0,0);
     const searchEndDate = end_date.setHours(29,59,59,999);
 
-    // console.log(searchStartDate);
+    let pipeline = [];
 
-    // const expenses = await Expense.find({
-    //     expense_date : {
-    //             $gte: searchStartDate,
-    //             $lte: searchEndDate
-    //         }
-    //     })
-    //     .limit(PAGE_SIZE)
-    //     .skip(PAGE_SIZE * page)
-    //     .populate('expense_categories')
-    //     .sort({'createdAt': -1})
-    //     .select([ 'createdAt', 'expense_categories', 'expense_date', 'expense_name', 'payments' ]);
+    if(req.query.expenseName != '') {
+        pipeline.push({
+            $match: {
+                $text: {
+                    $search: req.query.expenseName
+                }
+            }
+        })
+    }
 
+    if(req.query.category != '') {
+        pipeline.push({
+            $match: {
+                expense_categories: ObjectId(req.query.category)
+            }
+        })
+    }
 
-    const expenses = await Expense.aggregate([
+    if(req.query.book != '') {
+        pipeline.push({
+            $match: {
+                'payments.method': ObjectId(req.query.book)
+            }
+        })
+    }
+
+    pipeline.push(
         { 
             $match: {
                 expense_date: {
@@ -40,6 +56,7 @@ async function getExpenseReport(req, res) {
                 }
             } 
         },
+       
         { 
             $project: { 
                 expense_name: 1, 
@@ -94,9 +111,10 @@ async function getExpenseReport(req, res) {
                 expense_total: { $first: '$total' }
             }
         }
-    ]);
-    
+    )
 
+    const expenses = await Expense.aggregate(pipeline);
+    
     // console.log(util.inspect(expenses, false, null, true /* enable colors */))
 
     return res.status(201).json({
