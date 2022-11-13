@@ -21,6 +21,9 @@ import TextField from '@mui/material/TextField';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
+import Excel from 'exceljs';
+import { saveAs } from 'file-saver';
+
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
@@ -65,8 +68,6 @@ function ExpenseReport() {
 
             const url = AppUrl.expenseReportData + `?page=${pageNumber}` + `&start_date=${start_date}` + `&end_date=${end_date}` + `&book=${filterData.book}` + `&category=${filterData.category}` + `&expenseName=${filterData.expenseName}`
 
-            console.log(url);
-
             RestClient.getRequest(url)
             .then(result => {
                 const {expenses, totalPages} = result.data;
@@ -78,6 +79,76 @@ function ExpenseReport() {
             setLoading(false)
             console.log(error);
             return error
+        }
+    }
+
+    // EXPORT REPORT
+    const downloadReport = async () => {
+        setLoading(true)
+        await getExpenseDataForExport(exportExpenseData)
+    }
+
+    const exportExpenseData = async (expenses) => {
+        const columns = [
+            { header: 'Expense Name', key: 'expense_name' },
+            { header: 'Category', key: 'category' },
+            { header: 'Total amount', key: 'total_amount' },
+            { header: 'Create at', key: 'created_at' }
+        ];
+
+        const workSheetName = 'Worksheet-1';
+        const workBookName = 'expense_report';
+
+        const workbook = new Excel.Workbook();
+        const worksheet = workbook.addWorksheet(workSheetName);
+        worksheet.columns = columns;
+        worksheet.getRow(1).font = { bold: true };
+
+        const fileName = workBookName;
+
+        worksheet.columns.forEach(function (column, i) {
+            var maxLength = 0;
+            column["eachCell"]({ includeEmpty: true }, function (cell) {
+                var columnLength = cell.value ? cell.value.toString().length : 10;
+                if (columnLength > maxLength ) {
+                    maxLength = columnLength;
+                }
+            });
+            column.width = maxLength < 20 ? 20 : maxLength;
+        });
+
+        expenses.forEach(singleData => {
+            let data = {
+                expense_name: singleData.expense_name,
+                category: singleData.expense_category[0].category_name,
+                total_amount: singleData.expense_total,
+                created_at: moment(singleData.expense_date).format('YYYY-MM-DD HH:mm:ss')
+            }
+            worksheet.addRow(data);
+        });
+
+        const buf = await workbook.xlsx.writeBuffer();
+        setLoading(false)
+        saveAs(new Blob([buf]), `${fileName}.xlsx`);
+        workbook.removeWorksheet(workSheetName);
+    }
+
+    const getExpenseDataForExport = async (exportExpenseData) => {
+        try {
+            let start_date = moment(date_range[0].startDate, moment.ISO_8601).format()
+            let end_date = moment(date_range[0].endDate, moment.ISO_8601).format()
+            start_date = start_date.substring(0, 10);
+            end_date = end_date.substring(0, 10);
+
+            const url = AppUrl.expenseReportData + `?page=${pageNumber}` + `&start_date=${start_date}` + `&end_date=${end_date}` + `&book=${filterData.book}` + `&category=${filterData.category}` + `&expenseName=${filterData.expenseName}`
+
+            await RestClient.getRequest(url)
+            .then(result => {
+                const {expenses} = result.data;
+                exportExpenseData(expenses)
+            })
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -219,7 +290,7 @@ function ExpenseReport() {
                                 </FormControl>
 
                                 <FormControl >
-                                    <Button fullWidth variant="contained" onClick={() => filterReport()} startIcon={<CloudDownloadIcon />}>Download report</Button>
+                                    <Button fullWidth variant="contained" onClick={() => downloadReport()} startIcon={<CloudDownloadIcon />}>Download report</Button>
                                 </FormControl>
                             </div>
                             </Paper>

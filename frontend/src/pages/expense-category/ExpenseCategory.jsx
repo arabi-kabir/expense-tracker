@@ -16,7 +16,7 @@ function ExpenseCategory() {
 
     useEffect(() => {
         getAllExpensecategory()
-    })
+    }, [])
 
     const getAllExpensecategory = async () => {
         try {
@@ -30,6 +30,10 @@ function ExpenseCategory() {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const openCategory = (cat_id) => {
+        navigate('/expense-category/edit/' + cat_id)
     }
 
     return (
@@ -65,7 +69,7 @@ function ExpenseCategory() {
                                         </CardActionArea>
 
                                         <CardActions>
-                                            <Button size="small" color="primary" onClick={() => openBook(category._id)}>Details</Button>
+                                            <Button size="small" color="primary" onClick={() => openCategory(category._id)}>Details</Button>
                                         </CardActions>
                                     </Card>
                                 </Grid>

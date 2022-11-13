@@ -14,6 +14,6 @@ expenseCategoryRouter.get   ('/', getAllExpenseCategory)
 expenseCategoryRouter.get   ('/:id', getExpenseCategory)
 expenseCategoryRouter.post  ('/', FileUpload.single('photo'), insertExpenseCategory)
 expenseCategoryRouter.delete('/:id', deleteExpenseCategory)
-expenseCategoryRouter.put   ('/:id', updateExpenseCategory)
+expenseCategoryRouter.put   ('/:id', FileUpload.single('photo'), updateExpenseCategory)
 
 module.exports = expenseCategoryRouter

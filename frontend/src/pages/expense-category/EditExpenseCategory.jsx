@@ -10,10 +10,20 @@ import Select from '@mui/material/Select';
 import { useState } from 'react';
 import axios from 'axios';
 import AppUrl from '../../RestAPI/AppUrl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import RestClient from '../../RestAPI/RestClient';
+import Spinner from '../../components/Spinner';
+import { toast } from "react-toastify";
 
-function AddExpenseCategory() {
+function EditExpenseCategory() {
 	const navigate = useNavigate()
+    let { id } = useParams();
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        getCategoryInfo()
+    }, [])
 
 	const [category, setCategory] = useState({
 		category_name: '',
@@ -35,19 +45,53 @@ function AddExpenseCategory() {
 		})
 	}
 
+    const getCategoryInfo = () => {
+        try {
+            const url = AppUrl.expenseCategory + `/${id}`
+            return RestClient.getRequest(url)
+            .then(result => {
+                const data = result.data;
+
+                // console.log(data);
+
+                setCategory({
+                    category_name: data.category_name,
+                    category_status: data.category_status,
+                    photo: data.category_image
+                })
+                setLoading(false)
+            })
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    }
+
 	const onSubmit = async (e) => {
 		e.preventDefault()
 
-		const formdata = new FormData()
+		let formdata = new FormData()
 		formdata.append('photo', category.photo)
 		formdata.append('category_name', category.category_name)
 		formdata.append('category_status', category.category_status)
 
-		try {
-			const res = await axios.post(AppUrl.expenseCategory, formdata)
+        const url = AppUrl.expenseCategory + `/${id}`
 
-			navigate('/expense-category')
+        // console.log(formdata);
+
+		try {
+			const res = await RestClient.updateRequest(url, formdata)
+
+            console.log(res);
+
+            // return 0;
+
+            if(res.status == 200) {
+                toast.success('Category updated')
+                navigate('/expense-category/')
+            }
 		} catch (error) {
+            console.log(error);
 			if(error.response.status === 500) {
 				console.log('There was a problem with the server');
 			} else {
@@ -56,12 +100,16 @@ function AddExpenseCategory() {
 		}
 	}
 
+    if(loading) {
+        return <Spinner />
+    }
+
     return (
         <Fragment>
             <Menu />
 
             <Container>
-              <h2>Add New Expense Category</h2>
+              <h2>Edit Expense Category</h2>
 
               <div style={{ backgroundColor: '#ffffff', padding: '20px' }}>
                   <form onSubmit={onSubmit} encType="multipart/form-data">
@@ -91,6 +139,12 @@ function AddExpenseCategory() {
 							</Select>
 						</FormControl>
 
+                        <img 
+                            src={`/uploads/${category.photo}`} 
+                            alt='as' 
+                            style={{ display: 'block', width: '200px', marginBottom: '20px', border: '1px solid grey' }} 
+                        />
+
 						<input
 							type="file"
 							name="photo"
@@ -100,7 +154,7 @@ function AddExpenseCategory() {
 
 						<br />
 
-						<Button sx={{ mt: 2 }} type='submit' variant="contained">Add New Category</Button>
+						<Button sx={{ mt: 2 }} type='submit' variant="contained">Save Changes</Button>
 				  </form>
               </div>
             </Container>
@@ -108,4 +162,4 @@ function AddExpenseCategory() {
     )
 }
 
-export default AddExpenseCategory
+export default EditExpenseCategory

@@ -16,6 +16,7 @@ class AppUrl {
 
     // static myBook = this.baseUrl + 'my-book'
     static myBookLastExpenses = this.baseUrl + 'my-book/expenses'
+    static expenseReportDownload = this.baseUrl + 'expense/report/download'
 }
 
 export default AppUrl

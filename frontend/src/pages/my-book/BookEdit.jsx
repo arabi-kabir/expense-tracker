@@ -73,6 +73,8 @@ function BookEdit() {
 		formdata.append('bookTag', book.book_tag)
         formdata.append('currentBalance', book.current_balance)
 
+        console.log(formdata);
+
         const url = AppUrl.myBook + `/${id}`
 
 		try {

@@ -58,6 +58,10 @@ async function updateExpenseCategory(req, res) {
             res.status(400).send('expense category not found')
         } else {
             doc.category_name = req.body.category_name
+            doc.category_status = req.body.category_status
+            if(req.file) {
+                doc.category_image = req.file.filename
+            }
             await doc.save()
             res.status(200).send('expense category updated')
         }

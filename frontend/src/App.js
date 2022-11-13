@@ -19,6 +19,7 @@ import BookEdit from './pages/my-book/BookEdit';
 import ProtectedRoutes from './components/ProtectedRoutes';
 
 import toast, { Toaster } from 'react-hot-toast';
+import EditExpenseCategory from './pages/expense-category/EditExpenseCategory';
 
 require('dotenv').config()
 
@@ -49,6 +50,7 @@ function App() {
 
 						<Route path='/expense-category' element={<ExpenseCategory />} />
 						<Route path='/expense-category/add' element={<AddExpenseCategory />} />
+						<Route path='/expense-category/edit/:id' element={<EditExpenseCategory />} />
 					</Route>
 				</Routes>
 			</Router>
