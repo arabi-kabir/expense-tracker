@@ -85,7 +85,6 @@ class RestClient {
     }
 
     static updateRequest = (url, postData) => {
-        console.log(postData);
         var cors = {
             origin: "http://127.0.0.1:8000"
         }

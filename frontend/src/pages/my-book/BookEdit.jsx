@@ -4,7 +4,7 @@ import { Container } from '@mui/system'
 import React, { Fragment, useState } from 'react'
 import Menu from '../../components/navbar/Menu'
 import TextField from '@mui/material/TextField';
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import AppUrl from '../../RestAPI/AppUrl';
 import { useEffect } from 'react';
 import RestClient from '../../RestAPI/RestClient';

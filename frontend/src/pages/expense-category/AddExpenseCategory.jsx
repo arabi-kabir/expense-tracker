@@ -11,6 +11,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import AppUrl from '../../RestAPI/AppUrl';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 function AddExpenseCategory() {
 	const navigate = useNavigate()
@@ -45,7 +46,7 @@ function AddExpenseCategory() {
 
 		try {
 			const res = await axios.post(AppUrl.expenseCategory, formdata)
-
+			toast.success('Expense Category Added Successfully')
 			navigate('/expense-category')
 		} catch (error) {
 			if(error.response.status === 500) {

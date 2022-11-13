@@ -7,7 +7,7 @@ function About() {
       <div>
 			<Menu />
 			
-			<Container maxWidth="sm" style={{ border: '1px solid #95a5a6' }} sx={{ mt: 2 }}>
+			<Container style={{ marginTop: '20px', marginBottom: '60px', backgroundColor: '#ffffff', padding: '30px' }}>
 				About
 
 				<div>

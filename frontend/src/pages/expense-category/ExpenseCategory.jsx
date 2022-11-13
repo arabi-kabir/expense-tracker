@@ -9,9 +9,11 @@ import { Button, CardActionArea, CardActions, Grid, Container } from '@mui/mater
 import { useState, useEffect } from 'react';
 import AppUrl from '../../RestAPI/AppUrl';
 import RestClient from '../../RestAPI/RestClient';
+import Spinner from '../../components/Spinner';
 
 function ExpenseCategory() {
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
     const [expensecategory, setExpensecategory] = useState([])
 
     useEffect(() => {
@@ -25,7 +27,7 @@ function ExpenseCategory() {
             .then(result => {
                 const data = result.data;
                 setExpensecategory(data);
-                console.log(data);
+                setLoading(false)
             })
         } catch (error) {
             console.log(error);
@@ -34,6 +36,10 @@ function ExpenseCategory() {
 
     const openCategory = (cat_id) => {
         navigate('/expense-category/edit/' + cat_id)
+    }
+
+    if(loading) {
+        return <Spinner />
     }
 
     return (
@@ -50,8 +56,8 @@ function ExpenseCategory() {
                         {
                             expensecategory.map((category) => (
                                 <Grid item xs={3} style={{ marginBottom: '10px', }} key={category._id}>
-                                    <Card sx={{ maxWidth: 345 }}>
-                                        <CardActionArea>
+                                    <Card sx={{ maxWidth: 345 }} onClick={() => openCategory(category._id)}>
+                                        <CardActionArea onClick={() => openCategory(category._id)}>
                                             <CardMedia
                                                 component="img"
                                                 height="140"

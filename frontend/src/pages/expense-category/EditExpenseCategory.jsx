@@ -8,13 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
-import axios from 'axios';
 import AppUrl from '../../RestAPI/AppUrl';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import RestClient from '../../RestAPI/RestClient';
 import Spinner from '../../components/Spinner';
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 
 function EditExpenseCategory() {
 	const navigate = useNavigate()
@@ -70,6 +69,8 @@ function EditExpenseCategory() {
 	const onSubmit = async (e) => {
 		e.preventDefault()
 
+        setLoading(true)
+
 		let formdata = new FormData()
 		formdata.append('photo', category.photo)
 		formdata.append('category_name', category.category_name)
@@ -77,18 +78,13 @@ function EditExpenseCategory() {
 
         const url = AppUrl.expenseCategory + `/${id}`
 
-        // console.log(formdata);
-
 		try {
 			const res = await RestClient.updateRequest(url, formdata)
 
-            console.log(res);
-
-            // return 0;
-
             if(res.status == 200) {
-                toast.success('Category updated')
-                navigate('/expense-category/')
+                setLoading(false)
+                toast.success('Category Updated Successfully')
+                navigate('/expense-category')
             }
 		} catch (error) {
             console.log(error);
