@@ -11,8 +11,7 @@ const expenseSchema = new mongoose.Schema({
         ref: 'ExpenseCategory'
     },
     expense_date: {
-        type: Date,
-        ref: 'ExpenseCategory'
+        type: Date
     },
     payments: [
         {

@@ -15,6 +15,10 @@ const cashInSchema = new mongoose.Schema({
         ref: 'MyBook',
         required: true,
         autopopulate: true
+    },
+    cash_in_date: {
+        type: Date,
+        required: true
     }
 }, {
     timestamps: true

@@ -5,8 +5,6 @@ class RestClient {
     static getRequest = (url) => {
         const token = localStorage.getItem("token");
 
-        // console.log(token);
-
         return axios
             .get(url, {
                 headers: {
@@ -27,8 +25,6 @@ class RestClient {
         }
 
         const token = localStorage.getItem("token");
-
-        console.log(token);
 
         let config = {
             headers: {
@@ -59,7 +55,6 @@ class RestClient {
         }
 
         const token = localStorage.getItem("token");
-        console.log(token);
         
         let config = {
             headers: {

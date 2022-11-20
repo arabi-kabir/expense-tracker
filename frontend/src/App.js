@@ -17,9 +17,11 @@ import ExpenseCategory from './pages/expense-category/ExpenseCategory';
 import BookAdd from './pages/my-book/BookAdd';
 import BookEdit from './pages/my-book/BookEdit';
 import ProtectedRoutes from './components/ProtectedRoutes';
-
-import toast, { Toaster } from 'react-hot-toast';
 import EditExpenseCategory from './pages/expense-category/EditExpenseCategory';
+import CashIn from './pages/cash-in/CashInIndex';
+
+import { Toaster } from 'react-hot-toast';
+
 
 require('dotenv').config()
 
@@ -32,6 +34,7 @@ function App() {
 					<Route path='/register' element={<Register />} />
 					<Route path='/logout' element={<Logout />} />
 
+					{/* Protected Routes */}
 					<Route element={<ProtectedRoutes/>}>
 						<Route path='/dashboard' element={<Dashboard />} />
 						<Route path='/about' element={<About />} />
@@ -51,21 +54,12 @@ function App() {
 						<Route path='/expense-category' element={<ExpenseCategory />} />
 						<Route path='/expense-category/add' element={<AddExpenseCategory />} />
 						<Route path='/expense-category/edit/:id' element={<EditExpenseCategory />} />
+
+						<Route path='/cash-in' element={<CashIn />} />
 					</Route>
 				</Routes>
 			</Router>
-
-			{/* <ToastContainer
-				position="top-right"
-				autoClose={2000}
-				hideProgressBar={false}
-				newestOnTop={true}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss={false}
-				draggable
-				pauseOnHover
-			/> */}
+			
 			<Toaster />
         </Fragment>
     )

@@ -32,9 +32,6 @@ function Dashboard() {
             .then(result => {
                 if(result.status == 200) {
                     result = result.data
-
-                    console.log(result);
-
                     setLabels(last30Days)
                     setDataset(result)
                 }

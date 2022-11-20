@@ -32,6 +32,7 @@ function Menu() {
 							</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/expenses'}>Expenses</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/my-book'}>My Book</Link>
+							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/cash-in'}>Cash In</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/expense-category'}>Expense Category</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/reports'}>Report</Link>
 							<Link style={{ padding: '20px', textDecoration: 'none' }} to={'/about'}>About</Link>

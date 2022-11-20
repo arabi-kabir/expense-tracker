@@ -3,6 +3,7 @@ class AppUrl {
 
     static authLogin = this.baseUrl + 'auth/login'
     static authRegister = this.baseUrl + 'auth/register'
+    static validateToken = this.baseUrl + 'auth/validate-token'
 
     static getExpenses = this.baseUrl + 'expense'
     static expenseCategory = this.baseUrl + 'expense-category'
@@ -17,6 +18,7 @@ class AppUrl {
     // static myBook = this.baseUrl + 'my-book'
     static myBookLastExpenses = this.baseUrl + 'my-book/expenses'
     static expenseReportDownload = this.baseUrl + 'expense/report/download'
+    static cashIn = this.baseUrl + 'cash-in'
 }
 
 export default AppUrl

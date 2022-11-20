@@ -1,27 +1,19 @@
 const express = require('express')
 const {
-    getAllExpense,
-    getExpense,
-    insertExpense,
-    updateExpense,
-    deleteExpense,
-    getExpenseChartData,
-    dumpExpense
+    getAllCashIn,
+    getSingleCashIn,
+    insertCashIn
 } = require('./cash_in.controller')
 const auth = require('../../middleware/auth')
 
-const expenseRouter = express.Router()
+const cashInRouter = express.Router()
 
-expenseRouter.use(auth)
+cashInRouter.use(auth)
 
-expenseRouter.get   ('/', getAllExpense)
-expenseRouter.get   ('/:id', getExpense)
-expenseRouter.post  ('/', insertExpense)
-expenseRouter.put   ('/:id', updateExpense)
-expenseRouter.delete('/:id', deleteExpense)
+cashInRouter.get   ('/', getAllCashIn)
+cashInRouter.get   ('/:id', getSingleCashIn)
+cashInRouter.post  ('/', insertCashIn)
+// cashInRouter.put   ('/:id', updateExpense)
+// cashInRouter.delete('/:id', deleteExpense)
 
-expenseRouter.post('/expense-chart-data', getExpenseChartData)
-
-expenseRouter.post('/dump-data', dumpExpense)
-
-module.exports = expenseRouter
+module.exports = cashInRouter

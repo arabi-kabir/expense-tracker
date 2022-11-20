@@ -62,7 +62,7 @@ function Expenses() {
     const getExpensedata = async () => {
         try {
             const url = AppUrl.getExpenses + `?page=${pageNumber}`
-            console.log(url);
+            
             return RestClient.getRequest(url)
             .then(result => {
                 const {expenses, totalPages} = result.data;

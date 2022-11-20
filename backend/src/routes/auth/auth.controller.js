@@ -1,6 +1,7 @@
 const User = require('../../models/user.model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { getUserInfo } = require('../../services/user-info')
 
 // user registration
 async function userRegister(req, res) {
@@ -80,6 +81,11 @@ async function userLogin(req, res) {
     }
 }
 
+async function validateToken(req, res) {
+    const user = await getUserInfo(req)
+    res.status(200).json(user)
+}
+
 // Auth test route
 async function authTest(req, res) {
     res.status(200).send("Welcome 🙌 ");
@@ -88,5 +94,6 @@ async function authTest(req, res) {
 module.exports = {
     userRegister,
     userLogin,
+    validateToken,
     authTest
 }
