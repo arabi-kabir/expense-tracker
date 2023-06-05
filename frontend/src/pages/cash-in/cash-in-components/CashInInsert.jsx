@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import toast from 'react-hot-toast';
 
-function CashInInsert() {
+function CashInInsert(props) {
     const [loading, setLoading] = useState(true)
     const [bookList, setBookList] = useState([])
     
@@ -72,6 +72,8 @@ function CashInInsert() {
                         date: new Date()
                     })
                     toast.success('Cash in submitted')
+
+                    props.forceUpdateHook
                 }
             })
         } catch (error) {
@@ -83,7 +85,7 @@ function CashInInsert() {
     return (
         <Fragment>
             <Typography variant="overline" display="block" gutterBottom>
-                Cash In
+                Enter Cash In Details
             </Typography>
 
             <Paper elevation={3} spacing={2} style={{ padding: '10px' }}>

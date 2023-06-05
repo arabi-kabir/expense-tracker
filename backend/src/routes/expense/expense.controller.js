@@ -2,7 +2,8 @@ const { response } = require('express');
 var mongoose = require('mongoose');
 
 const Expense = require('../../models/expense.model')
-const Mailer = require('../../services/node-mailer')
+const Mailer = require('../../services/node-mailer');
+const MyBook = require('../../models/my_book.model');
 
 // get all expense
 async function getAllExpense(req, res) {
@@ -46,6 +47,11 @@ async function insertExpense(req, res) {
 
     try {
         await expense.save()
+
+        // Decrement MyBook
+        data.payments.forEach(element => {
+            deductMybook(element)
+        });
 
         // send mail
         // Mailer.sendMail({
@@ -198,6 +204,12 @@ function getRandomItem(arr) {
     const randomIndex = Math.floor(Math.random() * arr.length)
     const item = arr[randomIndex];
     return item;
+}
+
+async function deductMybook(payment) {
+    const mybook = await MyBook.findById(payment.method)
+    mybook.current_balance = mybook.current_balance - Math.abs(payment.amount)
+    await mybook.save()
 }
 
 module.exports = {

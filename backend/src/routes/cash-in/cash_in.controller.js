@@ -1,5 +1,6 @@
 var ObjectId = require('mongodb').ObjectID;
-const CashIn = require('../../models/cash_in.model')
+const CashIn = require('../../models/cash_in.model');
+const MyBook = require('../../models/my_book.model');
 
 // get all book
 async function getAllCashIn(req, res) {
@@ -42,6 +43,12 @@ async function insertCashIn(req, res) {
    
     try {
         await cashIn.save()
+
+        // Increment MyBook
+        const mybook = await MyBook.findById(req.body.cash_in_book)
+        mybook.current_balance = mybook.current_balance + Math.abs(req.body.amount)
+        await mybook.save()
+
         res.status(201).send(cashIn)
     } catch (error) {
         res.status(400).send(error)

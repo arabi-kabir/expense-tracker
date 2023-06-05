@@ -8,8 +8,6 @@ const Expense = require('../../../models/expense.model')
 // get all expense
 async function getExpenseReport(req, res) {
 
-    console.log(req.query);
-
     const PAGE_SIZE = 20
     const page = parseInt(req.query.page || 0)
     const total = await Expense.countDocuments({})
@@ -56,7 +54,6 @@ async function getExpenseReport(req, res) {
                 }
             } 
         },
-       
         { 
             $project: { 
                 expense_name: 1, 

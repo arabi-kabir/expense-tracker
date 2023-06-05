@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const MONGO_URL = 'mongodb+srv://arabikabir:lkjh6789@cluster0.b1gi6.mongodb.net/expense-tracker-api?retryWrites=true&w=majority'
+const MONGO_URL = process.env.MONGO_STRING 
 
 mongoose.connection.once('open', () => {
     console.log('MongoDB connection ready!');
