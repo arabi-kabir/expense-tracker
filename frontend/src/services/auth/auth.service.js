@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const login = (email, password) => {
     try {
+        console.log(AppUrl.authLogin);
         return RestClient.postRequest(AppUrl.authLogin, { email, password })
         .then(result => {
             if(result.status == 200) {
