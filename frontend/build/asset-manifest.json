@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.js": "/static/js/main.f7d1db3b.chunk.js",
+    "main.js.map": "/static/js/main.f7d1db3b.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.ec415a6b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.ec415a6b.js.map",
+    "static/css/2.6f05982f.chunk.css": "/static/css/2.6f05982f.chunk.css",
+    "static/js/2.ccb17f73.chunk.js": "/static/js/2.ccb17f73.chunk.js",
+    "static/js/2.ccb17f73.chunk.js.map": "/static/js/2.ccb17f73.chunk.js.map",
+    "static/js/3.d5c48518.chunk.js": "/static/js/3.d5c48518.chunk.js",
+    "static/js/3.d5c48518.chunk.js.map": "/static/js/3.d5c48518.chunk.js.map",
+    "static/js/4.f62d7d9d.chunk.js": "/static/js/4.f62d7d9d.chunk.js",
+    "static/js/4.f62d7d9d.chunk.js.map": "/static/js/4.f62d7d9d.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.6f05982f.chunk.css.map": "/static/css/2.6f05982f.chunk.css.map",
+    "static/js/2.ccb17f73.chunk.js.LICENSE.txt": "/static/js/2.ccb17f73.chunk.js.LICENSE.txt",
+    "static/js/3.d5c48518.chunk.js.LICENSE.txt": "/static/js/3.d5c48518.chunk.js.LICENSE.txt",
+    "static/media/300.css": "/static/media/roboto-vietnamese-300-normal.32fc45a3.woff2",
+    "static/media/400.css": "/static/media/roboto-vietnamese-400-normal.3230f9b0.woff2",
+    "static/media/500.css": "/static/media/roboto-vietnamese-500-normal.d8642a3d.woff2",
+    "static/media/700.css": "/static/media/roboto-vietnamese-700-normal.3425a701.woff2",
+    "static/media/spinner_2.7db34b9e.gif": "/static/media/spinner_2.7db34b9e.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ec415a6b.js",
+    "static/css/2.6f05982f.chunk.css",
+    "static/js/2.ccb17f73.chunk.js",
+    "static/js/main.f7d1db3b.chunk.js"
+  ]
+}
