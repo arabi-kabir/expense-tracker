@@ -40,6 +40,7 @@
     "start": "react-app-rewired --openssl-legacy-provider start",
     "start_mac": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "build-live": "sh -ac '. .env.prod; react-app-rewired build'",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
