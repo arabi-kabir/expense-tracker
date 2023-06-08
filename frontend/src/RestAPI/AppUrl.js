@@ -1,5 +1,5 @@
 class AppUrl {
-    static baseUrl = `${process.env.BACKEND_URL}`
+    static baseUrl = `${process.env.REACT_APP_UPLOAD_URL}`
 
     static authLogin = this.baseUrl + 'auth/login'
     static authRegister = this.baseUrl + 'auth/register'
