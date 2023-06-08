@@ -28,7 +28,6 @@ async function insertBook(req, res) {
         book_image: req.file.filename
     })
    
-
     try {
         await myBook.save()
         res.status(201).send(myBook)
